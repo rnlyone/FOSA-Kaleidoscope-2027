@@ -20,7 +20,7 @@ Fukuoka Overseas Students Association (FOSA).
 ## The website
 
 The poster assembles itself from its own shards on load. The mandala keeps turning and the pieces
-drift. Moving the pointer gives depth, and clicking the poster shatters it. On wide screens the
+drift. Moving the pointer gives depth, clicking the poster shatters it, and the replay icon in the corner plays the entrance again. On wide screens the
 burst continues past the poster to the edges of the window. Scrolling flies through the
 kaleidoscope into the sections About, Visit, Moments and Perform. Detailed information stays
 folded until a visitor opens it, and two buttons lead to the Google Forms:
