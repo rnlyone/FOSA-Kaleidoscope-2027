@@ -17,7 +17,7 @@
 :root{--bg:rgb(253,251,247);--ink:#061F42;--gold:#D19C51;--sky:#2b6cb8;--mist:#eaeff6;--navy2:#0b2a55;
   --m:clamp(20px,5vw,72px);--gap:clamp(96px,14vw,200px);color-scheme:light}
 *{box-sizing:border-box;margin:0;min-width:0}
-html{scroll-padding-top:72px;overflow-x:clip}
+html{scroll-padding-top:72px;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 section.s{overflow-x:clip}
 body{background:var(--bg);color:var(--ink);font:18px/1.6 "Josefin Sans",system-ui,sans-serif;overflow-x:clip}
 a{color:inherit}
@@ -46,7 +46,10 @@ p{max-width:34em}
 .wide .eR .pm{-webkit-mask-image:linear-gradient(90deg,#000 62%,transparent);mask-image:linear-gradient(90deg,#000 62%,transparent)}
 .pr,.pm{width:100%;height:100%}
 .pm img,.dust{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.tx{position:absolute;text-align:center;white-space:nowrap;font-family:"Josefin Sans",sans-serif;text-transform:none;letter-spacing:normal}
+.txstack{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tx,.words{position:relative;margin:0;max-width:none;white-space:nowrap;font-family:"Josefin Sans",sans-serif;text-transform:none}
+.words{display:flex;justify-content:center;align-items:baseline;gap:2.4cqw}
+.tx.x{color:#D19C51;font-weight:700}
 .tx>span{display:inline-block}
 .ch{display:inline-block}
 .js .poster{visibility:hidden}
@@ -374,14 +377,7 @@ section.s{position:relative;padding-block:var(--gap)}
 <div class="pc ov" data-k="haze" data-dx="0.4122" data-dy="0.9111" data-r="0.8925" data-a="155.7" data-gx="0.8698" data-gy="0.9819" data-n="Freeform 68" style="left:65.332%;top:94.987%;width:34.668%;height:5.013%"><div class="pr"><div class="pm"><img src="a/o65.webp" alt="" decoding="async"></div></div></div>
 <div class="pc ov" data-k="rule" data-dx="-0.0034" data-dy="1.0000" data-r="0.6562" data-a="180.2" data-gx="0.4998" data-gy="0.8773" data-n="Freeform 72" style="left:48.047%;top:87.500%;width:3.906%;height:1.302%"><div class="pr"><div class="pm"><img src="a/o66.webp" alt="" decoding="async"></div></div></div></div></div>
 <div class="L" id="Lwing"><div class="zm"></div></div>
-<div class="L" id="Ltxt"><div class="zm"><p class="tx fosa" aria-label="Fosa" style="left:41.995%;top:74.971%;width:14.313%;font-size:3.9622cqw;letter-spacing:0.793cqw;line-height:5.5469cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">F</span><span class="ch">O</span><span class="ch">S</span><span class="ch">A</span></span></p>
-<h1 class="tx title" aria-label="Kaleidoscope" style="left:17.281%;top:78.516%;width:63.741%;font-size:6.3594cqw;letter-spacing:1.2721cqw;line-height:8.9036cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">K</span><span class="ch">A</span><span class="ch">L</span><span class="ch">E</span><span class="ch">I</span><span class="ch">D</span><span class="ch">O</span><span class="ch">S</span><span class="ch">C</span><span class="ch">O</span><span class="ch">P</span><span class="ch">E</span></span></h1>
-<p class="tx tag" aria-label="Culture In Motion" style="left:29.570%;top:84.387%;width:39.162%;font-size:1.9388cqw;letter-spacing:0.9688cqw;line-height:2.7148cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">C</span><span class="ch">U</span><span class="ch">L</span><span class="ch">T</span><span class="ch">U</span><span class="ch">R</span><span class="ch">E</span><span class="ch">&nbsp;</span><span class="ch">I</span><span class="ch">N</span><span class="ch">&nbsp;</span><span class="ch">M</span><span class="ch">O</span><span class="ch">T</span><span class="ch">I</span><span class="ch">O</span><span class="ch">N</span></span></p>
-<p class="tx word" aria-label="Performance" style="left:28.165%;top:89.386%;width:11.764%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">P</span><span class="ch">E</span><span class="ch">R</span><span class="ch">F</span><span class="ch">O</span><span class="ch">R</span><span class="ch">M</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span></span></p>
-<p class="tx word" aria-label="Community" style="left:60.787%;top:89.386%;width:9.802%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">C</span><span class="ch">O</span><span class="ch">M</span><span class="ch">M</span><span class="ch">U</span><span class="ch">N</span><span class="ch">I</span><span class="ch">T</span><span class="ch">Y</span></span></p>
-<p class="tx word" aria-label="Exchange" style="left:45.573%;top:89.386%;width:8.618%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">E</span><span class="ch">X</span><span class="ch">C</span><span class="ch">H</span><span class="ch">A</span><span class="ch">N</span><span class="ch">G</span><span class="ch">E</span></span></p>
-<p class="tx x" aria-label="and" style="left:42.414%;top:89.386%;width:1.085%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:700;color:#D19C51"><span aria-hidden="true"><span class="ch">X</span></span></p>
-<p class="tx x" aria-label="and" style="left:57.209%;top:89.386%;width:1.085%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:700;color:#D19C51"><span aria-hidden="true"><span class="ch">X</span></span></p></div></div>
+<div class="L" id="Ltxt"><div class="zm"><div class="txstack" style="top:74.971%;left:0;width:98.303%"><p class="tx fosa" aria-label="FOSA" style="font-size:3.9622cqw;letter-spacing:0.793cqw;line-height:5.5469cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">F</span><span class="ch">O</span><span class="ch">S</span><span class="ch">A</span></span></p><h1 class="tx title" aria-label="Kaleidoscope" style="font-size:6.3594cqw;letter-spacing:1.2721cqw;line-height:8.9036cqw;font-weight:400;color:#061F42;margin-top:-0.228cqw"><span aria-hidden="true"><span class="ch">K</span><span class="ch">A</span><span class="ch">L</span><span class="ch">E</span><span class="ch">I</span><span class="ch">D</span><span class="ch">O</span><span class="ch">S</span><span class="ch">C</span><span class="ch">O</span><span class="ch">P</span><span class="ch">E</span></span></h1><p class="tx tag" aria-label="Culture In Motion" style="font-size:max(1.9388cqw,9px);letter-spacing:0.9688cqw;line-height:2.7148cqw;font-weight:400;color:#061F42;margin-top:-0.097cqw"><span aria-hidden="true"><span class="ch">C</span><span class="ch">U</span><span class="ch">L</span><span class="ch">T</span><span class="ch">U</span><span class="ch">R</span><span class="ch">E</span><span class="ch">&nbsp;</span><span class="ch">I</span><span class="ch">N</span><span class="ch">&nbsp;</span><span class="ch">M</span><span class="ch">O</span><span class="ch">T</span><span class="ch">I</span><span class="ch">O</span><span class="ch">N</span></span></p><p class="words" aria-label="Performance, exchange, community" style="font-size:max(1.1706cqw,8px);letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42;margin-top:4.784cqw"><span class="tx word"><span class="ch">P</span><span class="ch">E</span><span class="ch">R</span><span class="ch">F</span><span class="ch">O</span><span class="ch">R</span><span class="ch">M</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span></span><span class="tx x" aria-hidden="true"><span class="ch">X</span></span><span class="tx word"><span class="ch">E</span><span class="ch">X</span><span class="ch">C</span><span class="ch">H</span><span class="ch">A</span><span class="ch">N</span><span class="ch">G</span><span class="ch">E</span></span><span class="tx x" aria-hidden="true"><span class="ch">X</span></span><span class="tx word"><span class="ch">C</span><span class="ch">O</span><span class="ch">M</span><span class="ch">M</span><span class="ch">U</span><span class="ch">N</span><span class="ch">I</span><span class="ch">T</span><span class="ch">Y</span></span></p></div></div></div>
   </div>
   <div class="ctl" aria-label="Poster animation">
     <button class="chip" id="bReplay" type="button">Replay</button>
@@ -727,9 +723,8 @@ function idle() {
     gsap.fromTo(d.pm, { filter: 'brightness(1)' }, { filter: 'brightness(1.45)', duration: .35, yoyo: true, repeat: 1, ease: 'sine.inOut' });
   }).to({}, { duration: .45 }));
   L(gsap.timeline({ repeat: -1, repeatDelay: 2.2, delay: 1 }).to(axis.map(d => d.pm), { autoAlpha: .25, duration: .25, yoyo: true, repeat: 1, ease: 'sine.inOut', stagger: .06 }));
-  L(gsap.timeline({ repeat: -1, repeatDelay: 4.5, delay: 2 }).to(title, { yPercent: -14, duration: .45, ease: 'sine.inOut', yoyo: true, repeat: 1, stagger: .05 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 6, delay: 2 }).to(title, { yPercent: -6, duration: .5, ease: 'sine.inOut', yoyo: true, repeat: 1, stagger: .04 }));
   L(gsap.timeline({ repeat: -1, repeatDelay: 2.6, delay: 1.5 }).to(xs, { rotation: '+=180', duration: .9, ease: 'power3.inOut', stagger: .2 }));
-  L(gsap.to(fosa, { yPercent: -10, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: .2, yoyo: true, repeat: -1 } }));
   setLoops();
 }
 function flow(d) {

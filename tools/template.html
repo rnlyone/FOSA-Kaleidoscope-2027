@@ -17,7 +17,7 @@
 :root{--bg:{{BG}};--ink:#061F42;--gold:#D19C51;--sky:#2b6cb8;--mist:#eaeff6;--navy2:#0b2a55;
   --m:clamp(20px,5vw,72px);--gap:clamp(96px,14vw,200px);color-scheme:light}
 *{box-sizing:border-box;margin:0;min-width:0}
-html{scroll-padding-top:72px;overflow-x:clip}
+html{scroll-padding-top:72px;overflow-x:clip;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 section.s{overflow-x:clip}
 body{background:var(--bg);color:var(--ink);font:18px/1.6 "Josefin Sans",system-ui,sans-serif;overflow-x:clip}
 a{color:inherit}
@@ -46,7 +46,10 @@ p{max-width:34em}
 .wide .eR .pm{-webkit-mask-image:linear-gradient(90deg,#000 62%,transparent);mask-image:linear-gradient(90deg,#000 62%,transparent)}
 .pr,.pm{width:100%;height:100%}
 .pm img,.dust{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.tx{position:absolute;text-align:center;white-space:nowrap;font-family:"Josefin Sans",sans-serif;text-transform:none;letter-spacing:normal}
+.txstack{position:absolute;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tx,.words{position:relative;margin:0;max-width:none;white-space:nowrap;font-family:"Josefin Sans",sans-serif;text-transform:none}
+.words{display:flex;justify-content:center;align-items:baseline;gap:2.4cqw}
+.tx.x{color:#D19C51;font-weight:700}
 .tx>span{display:inline-block}
 .ch{display:inline-block}
 .js .poster{visibility:hidden}
@@ -467,9 +470,8 @@ function idle() {
     gsap.fromTo(d.pm, { filter: 'brightness(1)' }, { filter: 'brightness(1.45)', duration: .35, yoyo: true, repeat: 1, ease: 'sine.inOut' });
   }).to({}, { duration: .45 }));
   L(gsap.timeline({ repeat: -1, repeatDelay: 2.2, delay: 1 }).to(axis.map(d => d.pm), { autoAlpha: .25, duration: .25, yoyo: true, repeat: 1, ease: 'sine.inOut', stagger: .06 }));
-  L(gsap.timeline({ repeat: -1, repeatDelay: 4.5, delay: 2 }).to(title, { yPercent: -14, duration: .45, ease: 'sine.inOut', yoyo: true, repeat: 1, stagger: .05 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 6, delay: 2 }).to(title, { yPercent: -6, duration: .5, ease: 'sine.inOut', yoyo: true, repeat: 1, stagger: .04 }));
   L(gsap.timeline({ repeat: -1, repeatDelay: 2.6, delay: 1.5 }).to(xs, { rotation: '+=180', duration: .9, ease: 'power3.inOut', stagger: .2 }));
-  L(gsap.to(fosa, { yPercent: -10, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: .2, yoyo: true, repeat: -1 } }));
   setLoops();
 }
 function flow(d) {

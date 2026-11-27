@@ -47,7 +47,7 @@ for p in J['pieces']:
     groups[g].append(pc('bg', kind, p['x'], p['y'], p['w'], p['h'], p['f'], p['gx'], p['gy']))
 
 # ---------- overlay pieces (slide order) and text ----------
-ov, txt = [], []
+ov, txt, T = [], [], {}
 FIGS = {'Freeform 11', 'Freeform 13', 'Freeform 19', 'Freeform 61', 'Freeform 63'}
 k = 0
 for sp in tree.findall('p:sp', ns):
@@ -95,13 +95,33 @@ for sp in tree.findall('p:sp', ns):
     lh = int(lns.get('val')) / 100 if lns is not None else sz * 1.2
     weight = 700 if 'Bold' in face else 400
     role = {'FOSA': 'fosa', 'KALEIDOSCOPE': 'title', 'CULTURE IN MOTION': 'tag', 'X': 'x'}.get(t, 'word')
-    chars = ''.join(f'<span class="ch">{html.escape(c) if c != " " else "&nbsp;"}</span>' for c in t)
-    tag = 'h1' if role == 'title' else 'p'
-    style = (f'left:{x*100:.3f}%;top:{y*100:.3f}%;width:{w*100:.3f}%;'
-             f'font-size:{cqw(sz)}cqw;letter-spacing:{cqw(spc)}cqw;line-height:{cqw(lh)}cqw;'
-             f'font-weight:{weight};color:#{col}')
-    txt.append(f'<{tag} class="tx {role}" aria-label="{html.escape(t.title() if role!="x" else "and")}" style="{style}">'
-               f'<span aria-hidden="true">{chars}</span></{tag}>')
+    T.setdefault(role, []).append(dict(t=t, x=x, y=y, w=w, sz=sz, spc=spc, lh=lh, weight=weight, col=col))
+
+# ---- the poster's type as ONE flowing stack (lines push each other instead of overlapping
+#      when a phone enlarges small text), placed exactly where the PPT put each line ----
+def chars(t):
+    return ''.join(f'<span class="ch">{html.escape(c) if c != " " else "&nbsp;"}</span>' for c in t)
+def font(d, minpx=None):
+    fs = f'{cqw(d["sz"])}cqw' if minpx is None else f'max({cqw(d["sz"])}cqw,{minpx}px)'
+    return f'font-size:{fs};letter-spacing:{cqw(d["spc"])}cqw;line-height:{cqw(d["lh"])}cqw;font-weight:{d["weight"]};color:#{d["col"]}'
+F, Ti, Tg = T['fosa'][0], T['title'][0], T['tag'][0]
+row = sorted(T['word'] + T['x'], key=lambda d: d['x'])
+top = lambda d: d['y'] * 150                      # % of poster height -> cqw (poster is 2:3)
+gap1 = top(Ti) - (top(F) + cqw(F['lh']))
+gap2 = top(Tg) - (top(Ti) + cqw(Ti['lh']))
+gap3 = top(row[0]) - (top(Tg) + cqw(Tg['lh']))
+cx = (F['x'] + F['w'] / 2) * 100                  # the poster's own centre axis for the type
+words = ''.join(
+    (f'<span class="tx x" aria-hidden="true">{chars(d["t"])}</span>' if d['t'] == 'X'
+     else f'<span class="tx word">{chars(d["t"])}</span>') for d in row)
+wd = row[0]
+txt.append(
+    f'<div class="txstack" style="top:{F["y"]*100:.3f}%;left:0;width:{2*cx:.3f}%">'
+    f'<p class="tx fosa" aria-label="FOSA" style="{font(F)}"><span aria-hidden="true">{chars(F["t"])}</span></p>'
+    f'<h1 class="tx title" aria-label="{html.escape(Ti["t"].title())}" style="{font(Ti)};margin-top:{gap1:.3f}cqw"><span aria-hidden="true">{chars(Ti["t"])}</span></h1>'
+    f'<p class="tx tag" aria-label="{html.escape(Tg["t"].title())}" style="{font(Tg, 9)};margin-top:{gap2:.3f}cqw"><span aria-hidden="true">{chars(Tg["t"])}</span></p>'
+    f'<p class="words" aria-label="Performance, exchange, community" style="{font(wd, 8)};margin-top:{gap3:.3f}cqw">{words}</p>'
+    f'</div>')
 
 markup = (
     '<div class="L" id="Ldust"><div class="zm"><img class="dust" src="a/dust.webp" alt=""></div></div>\n'
