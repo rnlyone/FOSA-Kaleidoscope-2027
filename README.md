@@ -25,8 +25,8 @@ burst continues past the poster to the edges of the window. Scrolling flies thro
 kaleidoscope into the sections About, Visit, Moments and Perform. Detailed information stays
 folded until a visitor opens it, and two buttons lead to the Google Forms:
 
-- Reserve a free seat: <https://docs.google.com/forms/d/1T8xE7zlN29RPpQWMausfICLrCpUhzcIcdfh2Johy-vs/viewform>
-- Apply to perform (deadline 22 December 2026, 23:59): <https://docs.google.com/forms/d/1P8v3C2DItpqaBAdwlAEhp1DGRsNni7nGr9lcNxcrH_w/viewform>
+- Reserve a free seat: <https://docs.google.com/forms/d/e/1FAIpQLScnq_7KdX7n0TUb3ejYYVlVX7Rb1DaBfD8H6RL7N6RVIiZ0eA/viewform>
+- Apply to perform (deadline 22 December 2026, 23:59): <https://docs.google.com/forms/d/e/1FAIpQLSf-Yb4Z6fFtThfv4eqUFXkcBd-k0pBupnIcVt54X3RXIHmTBQ/viewform>
 
 All motion respects `prefers-reduced-motion`.
 

@@ -148,7 +148,7 @@ rosette = (f'<div class="rcopy" style="width:{CW*100:.2f}%;height:{CW*150:.2f}%;
            '<div class="rspin" id="rRing">' + rp('ring') + '</div><div class="rspin" id="rCore">' + rp('core') + '</div></div>')
 bg = 'rgb({},{},{})'.format(*J['bg'])
 tpl = open('/home/claude/template.html').read()
-out = (tpl.replace('{{MARKUP}}', markup).replace('{{ROSETTE}}', rosette).replace('{{BG}}', bg).replace('{{CXF}}', f'{CX:.5f}').replace('{{CYF}}', f'{CY:.5f}').replace('{{FORM_TICKET}}', 'https://docs.google.com/forms/d/1T8xE7zlN29RPpQWMausfICLrCpUhzcIcdfh2Johy-vs/viewform').replace('{{FORM_PERFORM}}', 'https://docs.google.com/forms/d/1P8v3C2DItpqaBAdwlAEhp1DGRsNni7nGr9lcNxcrH_w/viewform')
+out = (tpl.replace('{{MARKUP}}', markup).replace('{{ROSETTE}}', rosette).replace('{{BG}}', bg).replace('{{CXF}}', f'{CX:.5f}').replace('{{CYF}}', f'{CY:.5f}').replace('{{FORM_TICKET}}', 'https://docs.google.com/forms/d/e/1FAIpQLScnq_7KdX7n0TUb3ejYYVlVX7Rb1DaBfD8H6RL7N6RVIiZ0eA/viewform').replace('{{FORM_PERFORM}}', 'https://docs.google.com/forms/d/e/1FAIpQLSf-Yb4Z6fFtThfv4eqUFXkcBd-k0pBupnIcVt54X3RXIHmTBQ/viewform')
           .replace('{{CX}}', f'{CX*100:.3f}%').replace('{{CY}}', f'{CY*100:.3f}%'))
 open(f'{BASE}/site/index.html', 'w').write(out)
 print('bg pieces', {g: len(v) for g, v in groups.items()}, 'overlays', len(ov), 'text', len(txt))
