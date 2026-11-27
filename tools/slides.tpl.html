@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"Josefin Sans";src:url(a/josefin-400.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"Josefin Sans";src:url(a/josefin-700.woff2) format("woff2");font-weight:700}
+:root{--bg:rgb(253,251,247);--ink:#061F42;--gold:#D19C51;--navy2:#0b2a55}
+*{box-sizing:border-box;margin:0}
+body{width:4320px;height:1440px;position:relative;overflow:hidden;background:var(--bg);color:var(--ink);font-family:"Josefin Sans",sans-serif}
+.sl{position:absolute;top:0;width:1080px;height:1440px;overflow:visible}
+.s2{left:0}.s3{left:1080px;background:var(--ink);color:var(--bg)}.s4{left:2160px}.s5{left:3240px}
+.jp{font-family:"Noto Sans CJK JP","Noto Sans JP",sans-serif;letter-spacing:.08em}
+.abs{position:absolute}
+.logo{position:absolute;left:96px;top:84px;height:74px}
+.caps{text-transform:uppercase;font-weight:400;line-height:.92;letter-spacing:.05em}
+.cta{position:absolute;left:96px;display:flex;align-items:center;gap:28px;font-size:32px}
+.cta b{display:inline-block;background:var(--ink);color:var(--bg);font-weight:400;letter-spacing:.1em;text-transform:uppercase;padding:26px 36px 20px;font-size:32px}
+.s3 .cta b{background:var(--gold);color:var(--ink)}
+.deco{position:absolute;pointer-events:none}
+/* rosette, re-used from the website */
+.rosette{position:absolute}
+.rcopy{position:absolute}
+.rspin{position:absolute;inset:0;transform-origin:{{ORG}}}
+.rp{position:absolute;max-width:none}
+/* photos cut as facets */
+.mosaic{position:absolute;left:96px;top:470px;width:888px;height:700px;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(4,1fr);gap:12px}
+.shot{overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.p1{grid-column:1/3;grid-row:1/3;clip-path:polygon(0% 6%,100% 0%,94% 100%,4% 92%)}
+.p2{grid-column:3/7;grid-row:1;clip-path:polygon(3% 0%,100% 8%,97% 100%,0% 94%)}
+.p3{grid-column:3/7;grid-row:2;clip-path:polygon(0% 0%,96% 6%,100% 92%,5% 100%)}
+.p4{grid-column:1/3;grid-row:3/5;clip-path:polygon(6% 0%,100% 4%,92% 100%,0% 96%)}
+.p5{grid-column:3/5;grid-row:3/5;clip-path:polygon(0% 5%,94% 0%,100% 100%,3% 94%)}
+.p6{grid-column:5/7;grid-row:3/5;clip-path:polygon(4% 0%,100% 0%,96% 94%,0% 100%)}
+.logos{position:absolute;right:96px;bottom:84px;display:flex;align-items:center;gap:34px}
+.logos img{height:62px}.logos img.w{height:46px}
+</style></head><body>
+
+<!-- ============ SLIDE 2: the event ============ -->
+<section class="sl s2">
+  <img class="logo" src="a/logo-fosa2026.svg" alt="">
+  <div class="rosette" style="width:660px;height:660px;left:420px;top:-10px">{{ROSETTE}}</div>
+  <img class="deco" src="a/o06.webp" style="width:120px;left:300px;top:300px;transform:rotate(-28deg)">
+  <img class="deco" src="a/o09.webp" style="width:70px;left:250px;top:520px;transform:rotate(18deg)">
+  <img class="deco" src="a/o00.webp" style="width:140px;left:850px;top:990px;transform:rotate(30deg)">
+  <p class="abs" style="left:96px;top:250px;font-size:46px;line-height:1.25;width:330px">Save the date</p>
+  <h1 class="abs caps" style="left:90px;top:690px;font-size:204px">17 Jan<br>2027</h1>
+  <div class="abs" style="left:96px;top:1090px;font-size:42px;line-height:1.4">
+    <div>Sunday, 1:00 to 3:00 PM</div>
+    <div>Acros Fukuoka Event Hall, B2F</div>
+    <div>Free entry, open to everyone</div>
+  </div>
+  <div class="cta" style="top:1300px"><b>Reserve a free seat</b><span>Link in bio</span></div>
+</section>
+
+<!-- ============ SLIDE 3: call for performers ============ -->
+<section class="sl s3">
+  <img class="logo" src="a/logo-fosa2026.svg" alt="">
+  <h2 class="abs caps" style="left:90px;top:220px;font-size:150px">Take the<br>stage</h2>
+  <p class="abs" style="left:96px;top:540px;width:560px;font-size:40px;line-height:1.35">Dance, acoustic singing, poetry, traditional costume or another cultural performance.</p>
+  <p class="abs" style="left:96px;top:800px;width:540px;font-size:34px;line-height:1.4">Japanese and international performers are welcome. International students get priority.</p>
+  <div class="abs" style="left:96px;top:1010px">
+    <div style="font-size:36px;margin-bottom:14px">Apply by</div>
+    <div class="caps" style="font-size:108px;color:var(--gold)">22 Dec 2026</div>
+    <div style="font-size:36px;margin-top:14px">23:59</div>
+  </div>
+  <img class="deco" src="a/o08.webp" style="width:330px;left:700px;top:480px">
+  <img class="deco" src="a/o10.webp" style="width:300px;left:765px;top:715px;transform:rotate(-6deg)">
+  <div class="cta" style="top:1300px"><b>Apply to perform</b><span>Link in bio</span></div>
+</section>
+
+<!-- ============ SLIDE 4: moments ============ -->
+<section class="sl s4">
+  <img class="logo" src="a/logo-fosa2026.svg" alt="">
+  <h2 class="abs caps" style="left:90px;top:230px;font-size:92px">Moments from<br>past shows</h2>
+  <div class="mosaic">
+    <div class="shot p1"><img src="p/kimono.webp"></div>
+    <div class="shot p2"><img src="p/costumes.webp"></div>
+    <div class="shot p3"><img src="p/stage.webp"></div>
+    <div class="shot p4"><img src="p/veil.webp"></div>
+    <div class="shot p5"><img src="p/fanveil.webp"></div>
+    <div class="shot p6"><img src="p/team.webp" style="object-position:50% 30%"></div>
+  </div>
+  <div class="abs" style="left:96px;top:1215px;font-size:38px;line-height:1.35;width:520px">See you on 17 January 2027 at Acros Fukuoka.</div>
+  <div class="abs" style="left:96px;top:1330px;font-size:28px">Seats and performer sign-up: link in bio</div>
+  <div class="logos"><img src="a/logo-fosa.png"><img class="w" src="a/logo-fissc.png"></div>
+  <img class="deco" src="a/o53.webp" style="width:110px;left:930px;top:70px;transform:rotate(20deg)">
+</section>
+
+<!-- ============ SLIDE 5: FUKUOKA IS OPEN festival, same day ============ -->
+<section class="sl s5">
+  <img class="abs" src="a/fio-logo.png" style="left:96px;top:84px;height:80px">
+  <p class="abs" style="left:96px;top:250px;font-size:42px;line-height:1.3;width:600px">Also on the same day</p>
+  <h2 class="abs caps" style="left:90px;top:330px;font-size:118px">Fukuoka<br>is open</h2>
+  <p class="abs" style="left:96px;top:560px;font-size:46px;line-height:1.25;width:560px">International Exchange Festival</p>
+  <p class="abs jp" style="left:96px;top:690px;font-size:40px">国際交流フェスタ</p>
+  <div class="abs" style="left:96px;top:800px">
+    <div class="caps" style="font-size:96px;color:var(--gold);letter-spacing:.04em">11:00–16:00</div>
+    <div style="font-size:40px;line-height:1.4;margin-top:22px">
+      <div>JR Kyushu Hall, 9F, Hakata</div>
+      <div style="font-size:32px;line-height:1.35">1-1 Hakata-eki Chuogai,<br>Hakata-ku, Fukuoka</div>
+      <div style="margin-top:10px">Free entry</div>
+    </div>
+  </div>
+  <img class="abs" src="a/fio-mascot.png" style="width:440px;left:630px;top:600px">
+  <img class="deco" src="a/o06.webp" style="width:120px;left:880px;top:240px;transform:rotate(30deg)">
+  <img class="deco" src="a/o09.webp" style="width:70px;left:760px;top:420px;transform:rotate(-20deg)">
+  <img class="deco" src="a/o51.webp" style="width:110px;left:880px;top:1250px;transform:rotate(25deg)">
+  <div class="abs" style="left:96px;top:1236px;display:flex;align-items:center;gap:30px">
+    <img src="a/fio-qr.png" style="width:150px;height:150px">
+    <div style="font-size:32px;line-height:1.35">Details at<br><b style="font-weight:700">fisop.net</b></div>
+  </div>
+</section>
+
+<!-- shards that cross from one slide into the next -->
+<img class="deco" src="a/o00.webp" style="width:150px;left:3165px;top:1090px;transform:rotate(-25deg)">
+<img class="deco" src="a/o51.webp" style="width:140px;left:1010px;top:630px;transform:rotate(-12deg)">
+<img class="deco" src="a/o03.webp" style="width:170px;left:2080px;top:120px;transform:rotate(14deg)">
+<img class="deco" src="a/o56.webp" style="width:150px;left:2075px;top:1180px;transform:rotate(-20deg)">
+</body></html>

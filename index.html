@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOSA Kaleidoscope 2027</title>
+<link rel="icon" href="data:,">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+/* VOICE  festive and international, but calm: the poster speaks first, the page answers questions
+   IDEA   a kaleidoscope: the poster's own shards assemble, turn and scatter, then frame every section
+   PICTURE the poster cut into ~200 live pieces; real photographs from past shows cut into shard facets
+   COLOUR and TYPE  from the PPT: paper white, navy #061F42, gold #D19C51, sky blue from the shards; Josefin Sans
+   LAYOUT pinned poster that you scroll through, then four short sections, details folded away until asked */
+@font-face{font-family:"Josefin Sans";src:url(a/josefin-400.woff2) format("woff2");font-weight:400;font-display:block}
+@font-face{font-family:"Josefin Sans";src:url(a/josefin-700.woff2) format("woff2");font-weight:700;font-display:block}
+:root{--bg:rgb(253,251,247);--ink:#061F42;--gold:#D19C51;--sky:#2b6cb8;--mist:#eaeff6;--navy2:#0b2a55;
+  --m:clamp(20px,5vw,72px);--gap:clamp(96px,14vw,200px);color-scheme:light}
+*{box-sizing:border-box;margin:0;min-width:0}
+html{scroll-padding-top:72px;overflow-x:clip}
+section.s{overflow-x:clip}
+body{background:var(--bg);color:var(--ink);font:18px/1.6 "Josefin Sans",system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:var(--m)}
+h1,h2,h3{font-weight:400;line-height:1.05;letter-spacing:.06em;text-transform:uppercase;text-wrap:balance}
+h2{font-size:clamp(36px,5.4vw,76px)}
+h3{font-size:clamp(20px,2vw,26px);letter-spacing:.08em}
+p{max-width:34em}
+.lead{font-size:clamp(19px,1.6vw,23px);line-height:1.55}
+
+/* ---------- hero poster ---------- */
+.hero{position:relative;height:100svh;display:grid;place-items:center;overflow:hidden}
+.poster{position:relative;width:min(100vw,calc(100svh * 2 / 3));aspect-ratio:2/3;container-type:inline-size;
+  cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.L,.spin,.zm{position:absolute;inset:0}
+.rot,.spin,.zm{transform-origin:50.195% 43.978%}
+#Ltxt{pointer-events:none}
+.pc{position:absolute}
+.ray{position:absolute;transform-origin:0 50%;pointer-events:none}
+.pf{width:100%;height:100%}
+.spark{position:absolute;left:0;top:50%;width:9%;height:max(3px,320%);background:#e8b66a;border-radius:9px;opacity:0}
+.dotc{width:100%;height:100%;border-radius:50%;background:var(--ink)}
+#Lwing{pointer-events:none}
+.wide .eL .pm{-webkit-mask-image:linear-gradient(270deg,#000 62%,transparent);mask-image:linear-gradient(270deg,#000 62%,transparent)}
+.wide .eR .pm{-webkit-mask-image:linear-gradient(90deg,#000 62%,transparent);mask-image:linear-gradient(90deg,#000 62%,transparent)}
+.pr,.pm{width:100%;height:100%}
+.pm img,.dust{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.tx{position:absolute;text-align:center;white-space:nowrap;font-family:"Josefin Sans",sans-serif;text-transform:none;letter-spacing:normal}
+.tx>span{display:inline-block}
+.ch{display:inline-block}
+.js .poster{visibility:hidden}
+.ctl{position:absolute;left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom));display:flex;gap:4px;z-index:5}
+.cue{position:absolute;right:max(16px,env(safe-area-inset-right));bottom:max(22px,env(safe-area-inset-bottom));font-size:15px;
+  display:flex;align-items:center;gap:10px;text-decoration:none;z-index:5;min-height:44px}
+.cue i{width:8px;height:8px;border-radius:50%;background:var(--ink);display:block}
+.chip{font:inherit;font-size:15px;letter-spacing:.04em;color:var(--ink);background:var(--bg);border:0;border-radius:999px;
+  padding:12px 16px 10px;min-height:44px;cursor:pointer;transition:background-color .2s,transform .2s}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+@media (hover:hover){.chip:hover{background:var(--mist)}}
+
+/* ---------- top bar (appears after the poster) ---------- */
+.bar{position:fixed;inset:0 0 auto;z-index:20;background:var(--bg);transform:translateY(-101%);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.bar.on{transform:none}
+.bar .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.brand{font-weight:700;letter-spacing:.14em;text-decoration:none;margin-right:auto;font-size:16px}
+.bar nav{display:flex;gap:24px;font-size:16px}
+.bar nav a{text-decoration:none;padding:12px 0}
+@media (hover:hover){.bar nav a:hover{color:var(--sky)}}
+.bar .btn{white-space:nowrap}
+@media (max-width:760px){.bar nav{display:none}.deco.hm{display:none}}
+@media (max-width:420px){.hs{display:none}}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:16px 28px 13px;font:inherit;font-size:17px;
+  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;background:var(--ink);color:var(--bg);border:0;cursor:pointer;
+  transition:background-color .25s,transform .25s}
+.btn.sm{min-height:44px;padding:12px 18px 10px;font-size:14px}
+.btn.gold{background:var(--gold);color:var(--ink)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.chip:focus-visible,summary:focus-visible,a:focus-visible,.rosette:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+@media (hover:hover){.btn:hover{background:var(--sky);color:#fff}.btn.gold:hover{background:#e6b56c;color:var(--ink)}}
+
+/* ---------- details (folded information) ---------- */
+details{margin-top:28px}
+summary{list-style:none;display:inline-flex;align-items:center;gap:14px;min-height:48px;padding:12px 20px 10px 16px;cursor:pointer;
+  background:var(--mist);font-size:17px;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary .pl{position:relative;width:14px;height:14px;transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+summary .pl::before,summary .pl::after{content:"";position:absolute;inset:6px 0;background:currentColor}
+summary .pl::after{transform:rotate(90deg)}
+details[open] summary .pl{transform:rotate(45deg)}
+.more{padding-top:26px;display:grid;gap:18px}
+.facts{display:grid;gap:14px;padding:0;list-style:none}
+.facts li{display:grid;grid-template-columns:8.5em 1fr;gap:16px}
+.facts b{font-weight:700}
+@media (max-width:560px){.facts li{grid-template-columns:1fr;gap:2px}}
+
+/* ---------- sections ---------- */
+section.s{position:relative;padding-block:var(--gap)}
+.about .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:center}
+.about h2{margin-bottom:28px}
+.rosette{position:relative;width:min(100%,600px);aspect-ratio:1;margin-inline:auto;cursor:pointer;border-radius:50%}
+.rcopy{position:absolute;pointer-events:none}
+.rspin{position:absolute;inset:0;pointer-events:none;transform-origin:50.195% 43.978%}
+.rp{position:absolute;max-width:none;pointer-events:none;user-select:none}
+.rnote{text-align:center;font-size:15px;margin:14px auto 0}
+@media (max-width:860px){.about .wrap{grid-template-columns:1fr}.rosette{width:min(100%,440px)}}
+
+.visit{overflow:hidden}
+.date{font-size:clamp(38px,12.4vw,200px);letter-spacing:.04em;line-height:.9;margin-bottom:clamp(28px,4vw,56px);white-space:nowrap}
+.date .ch{will-change:transform}
+.visit .row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,5vw,80px);align-items:start}
+.when{font-size:clamp(22px,2.2vw,30px);line-height:1.4;max-width:none}
+.when span{display:block}
+.visit .act{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.deco{position:absolute;pointer-events:none;z-index:0}
+.visit .wrap,.perform .wrap,.moments .wrap{position:relative;z-index:1}
+@media (max-width:760px){.visit .row{grid-template-columns:1fr}}
+
+.mosaic{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:clamp(150px,17vw,260px);gap:clamp(6px,1vw,14px);margin-top:clamp(36px,5vw,64px)}
+.shot{position:relative;overflow:hidden;margin:0}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+@media (hover:hover){.shot:hover img{transform:scale(1.06)}}
+.s1{grid-column:1/3;grid-row:1/3}.s2{grid-column:3/7;grid-row:1}.s3{grid-column:3/7;grid-row:2}
+.s4{grid-column:1/3;grid-row:3/5}.s5{grid-column:3/5;grid-row:3/5}.s6{grid-column:5/7;grid-row:3/5}
+@media (max-width:700px){.mosaic{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:42vw}
+  .s1{grid-column:1;grid-row:1/3}.s2{grid-column:2;grid-row:1}.s3{grid-column:2;grid-row:2}
+  .s4{grid-column:1;grid-row:3/5}.s5{grid-column:2;grid-row:3/5}.s6{grid-column:1/3;grid-row:5/7}}
+
+.perform{background:var(--ink);color:var(--bg);overflow:hidden}
+.perform .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,80px);align-items:center}
+.perform h2{margin-bottom:28px}
+.deadline{font-size:clamp(28px,3.4vw,46px);line-height:1.1;letter-spacing:.04em;margin:40px 0 28px;color:var(--gold);max-width:none}
+.deadline span{display:block;font-size:.5em;letter-spacing:.06em;color:var(--bg);margin-bottom:10px}
+.perform summary{background:var(--navy2);color:var(--bg)}
+.sched{list-style:none;padding:0;display:grid;gap:10px}
+.sched li{display:grid;grid-template-columns:7.5em 1fr;gap:16px}
+.sched time{font-weight:700;white-space:nowrap;color:var(--gold)}
+.fee{border-collapse:collapse;width:100%;max-width:420px}
+.fee td{padding:9px 0}
+.fee td:last-child{text-align:right;font-weight:700;white-space:nowrap}
+.fee tr:nth-child(odd) td{background:var(--navy2)}
+.fee td:first-child{padding-left:12px}.fee td:last-child{padding-right:12px}
+.notes{padding-left:1.1em;display:grid;gap:8px}
+.figs{position:relative;aspect-ratio:4/5;width:100%}
+.figs img{position:absolute}
+@media (max-width:860px){.perform .wrap{grid-template-columns:1fr}.figs{max-width:460px;margin-inline:auto}}
+
+.foot{padding-block:var(--gap) 40px;overflow:hidden}
+.big{font-size:clamp(90px,27vw,420px);line-height:.8;letter-spacing:.06em;font-weight:400;margin-left:-.04em;white-space:nowrap}
+.foot .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px 48px;margin-top:48px;align-items:end}
+.foot .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.contact{display:grid;gap:6px;font-size:17px}
+.logos{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(28px,4vw,56px);margin-top:clamp(56px,7vw,96px)}
+.logos img{height:clamp(52px,5.5vw,76px);width:auto}
+.logos img.wide{height:clamp(40px,4.2vw,58px)}
+.small{font-size:14px;margin-top:32px}
+@media (max-width:760px){.foot .row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="bar" id="bar"><div class="wrap">
+  <a class="brand" href="#top">FOSA<span class="hs"> KALEIDOSCOPE</span></a>
+  <nav aria-label="Sections"><a href="#about">About</a><a href="#visit">Visit</a><a href="#moments">Moments</a><a href="#perform">Perform</a></nav>
+  <a class="btn sm" href="https://docs.google.com/forms/d/1T8xE7zlN29RPpQWMausfICLrCpUhzcIcdfh2Johy-vs/viewform" target="_blank" rel="noopener">Reserve a seat</a>
+</div></header>
+
+<main>
+<section class="hero" id="top">
+  <div class="poster" id="poster" role="img" aria-label="FOSA Kaleidoscope, culture in motion. Performance, exchange, community. A kaleidoscope of blue and gold shards around silhouettes of dancers and musicians.">
+<div class="L" id="Ldust"><div class="zm"><img class="dust" src="a/dust.webp" alt=""></div></div>
+<div class="L rot" id="Louter"><div class="zm"><div class="spin"><div class="pc bg" data-k="shard" data-dx="0.2603" data-dy="-0.9655" data-r="0.6463" data-a="15.1" data-gx="0.6702" data-gy="0.0237" style="left:65.625%;top:0.846%;width:2.734%;height:2.734%"><div class="pr"><div class="pm"><img src="a/b000.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.0034" data-dy="-1.0000" data-r="0.5801" data-a="359.8" data-gx="0.5000" data-gy="0.0531" style="left:49.414%;top:3.841%;width:1.074%;height:2.930%"><div class="pr"><div class="pm"><img src="a/b001.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2699" data-dy="-0.9629" data-r="0.5806" data-a="15.7" data-gx="0.6587" data-gy="0.0671" style="left:64.648%;top:5.794%;width:2.539%;height:1.888%"><div class="pr"><div class="pm"><img src="a/b002.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.5255" data-dy="-0.8508" data-r="0.5587" data-a="31.7" data-gx="0.7955" data-gy="0.1229" style="left:70.508%;top:6.576%;width:19.238%;height:11.849%"><div class="pr"><div class="pm"><img src="a/b003.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.1627" data-dy="-0.9867" data-r="0.4612" data-a="9.4" data-gx="0.5770" data-gy="0.1364" style="left:53.223%;top:8.398%;width:9.863%;height:11.393%"><div class="pr"><div class="pm"><img src="a/b004.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.3574" data-dy="-0.9340" data-r="0.5456" data-a="339.1" data-gx="0.3070" data-gy="0.1001" style="left:29.590%;top:9.180%;width:2.539%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b005.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.3289" data-dy="-0.9444" data-r="0.4925" data-a="340.8" data-gx="0.3400" data-gy="0.1297" style="left:30.957%;top:10.417%;width:5.859%;height:5.273%"><div class="pr"><div class="pm"><img src="a/b006.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.2849" data-dy="-0.9586" data-r="0.4540" data-a="16.6" data-gx="0.6313" data-gy="0.1497" style="left:60.742%;top:12.630%;width:5.762%;height:5.273%"><div class="pr"><div class="pm"><img src="a/b007.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3912" data-dy="-0.9203" data-r="0.3826" data-a="23.0" data-gx="0.6516" data-gy="0.2051" style="left:55.859%;top:12.630%;width:20.801%;height:17.188%"><div class="pr"><div class="pm"><img src="a/b008.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.7057" data-dy="-0.7085" data-r="0.5892" data-a="44.9" data-gx="0.9178" data-gy="0.1614" style="left:87.793%;top:13.672%;width:9.766%;height:6.445%"><div class="pr"><div class="pm"><img src="a/b009.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.2217" data-dy="-0.9751" data-r="0.3662" data-a="347.2" data-gx="0.4208" data-gy="0.2017" style="left:37.402%;top:14.062%;width:10.254%;height:11.328%"><div class="pr"><div class="pm"><img src="a/b010.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3285" data-dy="-0.9445" data-r="0.4559" data-a="19.2" data-gx="0.6517" data-gy="0.1527" style="left:64.258%;top:14.453%;width:1.758%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b011.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6612" data-dy="-0.7502" data-r="0.5477" data-a="41.4" data-gx="0.8641" data-gy="0.1659" style="left:83.789%;top:15.039%;width:5.469%;height:3.841%"><div class="pr"><div class="pm"><img src="a/b012.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.1503" data-dy="-0.9886" data-r="0.4003" data-a="351.4" data-gx="0.4418" data-gy="0.1760" style="left:42.480%;top:16.276%;width:3.027%;height:3.125%"><div class="pr"><div class="pm"><img src="a/b013.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6836" data-dy="-0.7298" data-r="0.4183" data-a="43.1" data-gx="0.7879" data-gy="0.2362" style="left:72.852%;top:17.253%;width:13.770%;height:13.346%"><div class="pr"><div class="pm"><img src="a/b014.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2056" data-dy="-0.9786" data-r="0.3660" data-a="11.9" data-gx="0.5772" data-gy="0.2010" style="left:55.371%;top:17.448%;width:4.492%;height:5.208%"><div class="pr"><div class="pm"><img src="a/b015.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0049" data-dy="-1.0000" data-r="0.3705" data-a="359.7" data-gx="0.5001" data-gy="0.1928" style="left:49.121%;top:18.359%;width:1.953%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b016.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.5433" data-dy="-0.8395" data-r="0.3752" data-a="32.9" data-gx="0.7058" data-gy="0.2298" style="left:61.230%;top:18.750%;width:16.699%;height:9.375%"><div class="pr"><div class="pm"><img src="a/b017.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.5544" data-dy="-0.8322" data-r="0.3652" data-a="326.3" data-gx="0.2995" data-gy="0.2372" style="left:28.223%;top:21.615%;width:3.906%;height:4.036%"><div class="pr"><div class="pm"><img src="a/b018.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0078" data-dy="-1.0000" data-r="0.3176" data-a="359.6" data-gx="0.4995" data-gy="0.2281" style="left:49.023%;top:22.135%;width:1.855%;height:1.367%"><div class="pr"><div class="pm"><img src="a/b019.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7687" data-dy="-0.6397" data-r="0.4455" data-a="50.2" data-gx="0.8444" data-gy="0.2498" style="left:81.543%;top:22.396%;width:5.566%;height:4.948%"><div class="pr"><div class="pm"><img src="a/b020.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0067" data-dy="-1.0000" data-r="0.3009" data-a="359.6" data-gx="0.4999" data-gy="0.2392" style="left:48.926%;top:23.242%;width:2.148%;height:1.497%"><div class="pr"><div class="pm"><img src="a/b021.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.6923" data-dy="-0.7216" data-r="0.3515" data-a="316.2" data-gx="0.2586" data-gy="0.2707" style="left:22.070%;top:23.438%;width:7.324%;height:8.203%"><div class="pr"><div class="pm"><img src="a/b022.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2925" data-dy="-0.9563" data-r="0.3098" data-a="17.0" data-gx="0.5926" data-gy="0.2423" style="left:58.105%;top:23.763%;width:2.246%;height:0.977%"><div class="pr"><div class="pm"><img src="a/b023.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.1914" data-dy="-0.9815" data-r="0.2917" data-a="11.0" data-gx="0.5578" data-gy="0.2489" style="left:54.297%;top:23.503%;width:3.223%;height:2.409%"><div class="pr"><div class="pm"><img src="a/b024.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.4172" data-dy="-0.9088" data-r="0.2636" data-a="335.3" data-gx="0.3920" data-gy="0.2801" style="left:34.375%;top:23.763%;width:9.766%;height:8.203%"><div class="pr"><div class="pm"><img src="a/b025.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0044" data-dy="-1.0000" data-r="0.2833" data-a="359.7" data-gx="0.5007" data-gy="0.2509" style="left:49.121%;top:24.414%;width:2.148%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b026.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.2409" data-dy="-0.9705" data-r="0.2592" data-a="346.1" data-gx="0.4395" data-gy="0.2721" style="left:41.699%;top:24.740%;width:4.688%;height:5.013%"><div class="pr"><div class="pm"><img src="a/b027.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.1600" data-dy="-0.9871" data-r="0.2759" data-a="9.2" data-gx="0.5461" data-gy="0.2582" style="left:53.223%;top:24.935%;width:2.246%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b028.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.5855" data-dy="-0.8107" data-r="0.3181" data-a="324.2" data-gx="0.3157" data-gy="0.2678" style="left:29.980%;top:25.911%;width:2.734%;height:1.953%"><div class="pr"><div class="pm"><img src="a/b030.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.8416" data-dy="-0.5400" data-r="0.3136" data-a="57.3" data-gx="0.7659" data-gy="0.3269" style="left:66.797%;top:26.042%;width:18.945%;height:12.956%"><div class="pr"><div class="pm"><img src="a/b031.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.5177" data-dy="-0.8556" data-r="0.2645" data-a="31.2" data-gx="0.6389" data-gy="0.2889" style="left:56.055%;top:26.107%;width:14.941%;height:5.534%"><div class="pr"><div class="pm"><img src="a/b032.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8035" data-dy="-0.5953" data-r="0.3731" data-a="306.5" data-gx="0.2021" data-gy="0.2917" style="left:14.844%;top:26.432%;width:11.523%;height:5.534%"><div class="pr"><div class="pm"><img src="a/b033.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.6677" data-dy="-0.7445" data-r="0.2735" data-a="318.1" data-gx="0.3193" data-gy="0.3040" style="left:28.516%;top:27.279%;width:5.762%;height:6.510%"><div class="pr"><div class="pm"><img src="a/b035.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7496" data-dy="-0.6619" data-r="0.2917" data-a="48.6" data-gx="0.7206" data-gy="0.3111" style="left:70.898%;top:30.013%;width:2.344%;height:2.018%"><div class="pr"><div class="pm"><img src="a/b037.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="-0.7770" data-dy="-0.6295" data-r="0.2607" data-a="309.0" data-gx="0.2994" data-gy="0.3304" style="left:29.102%;top:32.357%;width:1.758%;height:1.302%"><div class="pr"><div class="pm"><img src="a/b040.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.9031" data-dy="-0.4294" data-r="0.3613" data-a="64.6" data-gx="0.8282" data-gy="0.3363" style="left:80.371%;top:32.943%;width:4.590%;height:1.497%"><div class="pr"><div class="pm"><img src="a/b044.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.9226" data-dy="-0.3858" data-r="0.2681" data-a="292.7" data-gx="0.2546" data-gy="0.3708" style="left:20.020%;top:35.417%;width:10.840%;height:4.102%"><div class="pr"><div class="pm"><img src="a/b047.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9805" data-dy="-0.1965" data-r="0.2814" data-a="78.7" data-gx="0.7779" data-gy="0.4029" style="left:76.270%;top:39.583%;width:2.930%;height:1.497%"><div class="pr"><div class="pm"><img src="a/b063.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="-0.9998" data-dy="0.0182" data-r="0.2734" data-a="269.0" data-gx="0.2286" data-gy="0.4431" style="left:22.070%;top:43.555%;width:1.660%;height:1.497%"><div class="pr"><div class="pm"><img src="a/b068.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9998" data-dy="0.0198" data-r="0.2698" data-a="91.1" data-gx="0.7717" data-gy="0.4433" style="left:76.270%;top:43.620%;width:2.246%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b069.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9851" data-dy="0.1722" data-r="0.2608" data-a="99.9" data-gx="0.7589" data-gy="0.4697" style="left:72.852%;top:45.833%;width:5.957%;height:2.604%"><div class="pr"><div class="pm"><img src="a/b074.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.9719" data-dy="0.2354" data-r="0.3129" data-a="256.4" data-gx="0.1978" data-gy="0.4889" style="left:17.773%;top:47.917%;width:3.906%;height:1.888%"><div class="pr"><div class="pm"><img src="a/b077.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9228" data-dy="0.3853" data-r="0.2641" data-a="112.7" data-gx="0.7457" data-gy="0.5076" style="left:68.848%;top:49.349%;width:11.426%;height:3.646%"><div class="pr"><div class="pm"><img src="a/b082.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.9327" data-dy="0.3605" data-r="0.3693" data-a="248.9" data-gx="0.1575" data-gy="0.5285" style="left:8.789%;top:49.414%;width:15.137%;height:6.380%"><div class="pr"><div class="pm"><img src="a/b086.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.8552" data-dy="0.5183" data-r="0.2749" data-a="121.2" data-gx="0.7371" data-gy="0.5348" style="left:67.090%;top:49.935%;width:10.840%;height:7.682%"><div class="pr"><div class="pm"><img src="a/b087.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.8637" data-dy="0.5040" data-r="0.3415" data-a="120.3" data-gx="0.7969" data-gy="0.5545" style="left:76.270%;top:52.018%;width:7.324%;height:7.617%"><div class="pr"><div class="pm"><img src="a/b089.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8464" data-dy="0.5326" data-r="0.3447" data-a="237.8" data-gx="0.2102" data-gy="0.5622" style="left:17.188%;top:53.125%;width:7.227%;height:5.273%"><div class="pr"><div class="pm"><img src="a/b095.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7277" data-dy="0.6859" data-r="0.2592" data-a="133.3" data-gx="0.6906" data-gy="0.5583" style="left:66.602%;top:53.841%;width:5.566%;height:3.711%"><div class="pr"><div class="pm"><img src="a/b096.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.7205" data-dy="0.6935" data-r="0.2633" data-a="226.1" data-gx="0.3123" data-gy="0.5615" style="left:29.492%;top:54.883%;width:3.125%;height:2.279%"><div class="pr"><div class="pm"><img src="a/b097.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="fig" data-dx="0.5669" data-dy="0.8238" data-r="0.3954" data-a="145.5" data-gx="0.7261" data-gy="0.6569" style="left:58.789%;top:56.315%;width:27.832%;height:18.034%"><div class="pr"><div class="pm"><img src="a/b100.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3282" data-dy="0.9446" data-r="0.3080" data-a="160.8" data-gx="0.6030" data-gy="0.6337" style="left:56.738%;top:57.096%;width:8.887%;height:11.979%"><div class="pr"><div class="pm"><img src="a/b102.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.7260" data-dy="0.6877" data-r="0.3726" data-a="133.4" data-gx="0.7725" data-gy="0.6106" style="left:73.242%;top:57.227%;width:9.863%;height:7.812%"><div class="pr"><div class="pm"><img src="a/b103.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6245" data-dy="0.7811" data-r="0.3466" data-a="218.6" data-gx="0.2855" data-gy="0.6202" style="left:20.020%;top:57.227%;width:15.723%;height:10.156%"><div class="pr"><div class="pm"><img src="a/b104.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.3902" data-dy="0.9207" data-r="0.2994" data-a="203.0" data-gx="0.3851" data-gy="0.6235" style="left:35.352%;top:58.789%;width:7.031%;height:7.357%"><div class="pr"><div class="pm"><img src="a/b105.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.2664" data-dy="0.9639" data-r="0.3261" data-a="195.4" data-gx="0.4151" data-gy="0.6493" style="left:36.914%;top:60.352%;width:9.473%;height:11.589%"><div class="pr"><div class="pm"><img src="a/b106.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.5037" data-dy="0.8639" data-r="0.3115" data-a="210.2" data-gx="0.3451" data-gy="0.6192" style="left:33.594%;top:61.328%;width:1.953%;height:1.237%"><div class="pr"><div class="pm"><img src="a/b107.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.4262" data-dy="0.9046" data-r="0.3193" data-a="154.8" data-gx="0.6380" data-gy="0.6323" style="left:62.305%;top:61.719%;width:3.125%;height:3.125%"><div class="pr"><div class="pm"><img src="a/b108.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0077" data-dy="1.0000" data-r="0.2844" data-a="180.4" data-gx="0.4998" data-gy="0.6294" style="left:49.023%;top:62.240%;width:2.148%;height:1.497%"><div class="pr"><div class="pm"><img src="a/b109.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0067" data-dy="1.0000" data-r="0.3043" data-a="180.4" data-gx="0.4999" data-gy="0.6427" style="left:49.219%;top:63.477%;width:1.660%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b110.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6500" data-dy="0.7600" data-r="0.3979" data-a="220.5" data-gx="0.2434" data-gy="0.6414" style="left:23.242%;top:63.607%;width:2.246%;height:1.172%"><div class="pr"><div class="pm"><img src="a/b111.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2783" data-dy="0.9605" data-r="0.3202" data-a="163.8" data-gx="0.5911" data-gy="0.6448" style="left:57.910%;top:63.867%;width:2.051%;height:1.172%"><div class="pr"><div class="pm"><img src="a/b112.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2751" data-dy="0.9614" data-r="0.3335" data-a="164.0" data-gx="0.5937" data-gy="0.6535" style="left:58.398%;top:64.583%;width:1.953%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b113.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0066" data-dy="1.0000" data-r="0.3233" data-a="180.4" data-gx="0.4998" data-gy="0.6553" style="left:49.023%;top:64.974%;width:2.246%;height:1.237%"><div class="pr"><div class="pm"><img src="a/b114.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.4891" data-dy="0.8722" data-r="0.4044" data-a="209.3" data-gx="0.3042" data-gy="0.6749" style="left:28.320%;top:65.951%;width:5.273%;height:3.190%"><div class="pr"><div class="pm"><img src="a/b115.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.3437" data-dy="0.9391" data-r="0.3694" data-a="200.1" data-gx="0.3750" data-gy="0.6711" style="left:36.426%;top:66.016%;width:2.344%;height:2.083%"><div class="pr"><div class="pm"><img src="a/b116.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2829" data-dy="0.9591" data-r="0.3667" data-a="163.6" data-gx="0.6057" data-gy="0.6743" style="left:59.180%;top:66.016%;width:2.637%;height:2.930%"><div class="pr"><div class="pm"><img src="a/b117.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.1169" data-dy="0.9931" data-r="0.3819" data-a="173.3" data-gx="0.5466" data-gy="0.6926" style="left:52.344%;top:66.667%;width:4.492%;height:5.599%"><div class="pr"><div class="pm"><img src="a/b118.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.3798" data-dy="0.9251" data-r="0.4250" data-a="202.3" data-gx="0.3405" data-gy="0.7019" style="left:29.980%;top:66.797%;width:7.715%;height:7.292%"><div class="pr"><div class="pm"><img src="a/b119.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.4682" data-dy="0.8836" data-r="0.4006" data-a="152.1" data-gx="0.6895" data-gy="0.6758" style="left:67.676%;top:66.927%;width:2.441%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b120.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6870" data-dy="0.7266" data-r="0.4820" data-a="136.6" data-gx="0.8331" data-gy="0.6733" style="left:82.324%;top:66.732%;width:2.246%;height:1.237%"><div class="pr"><div class="pm"><img src="a/b121.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0043" data-dy="1.0000" data-r="0.3629" data-a="180.2" data-gx="0.5004" data-gy="0.6817" style="left:48.730%;top:67.448%;width:2.734%;height:1.562%"><div class="pr"><div class="pm"><img src="a/b122.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.1204" data-dy="0.9927" data-r="0.3739" data-a="186.9" data-gx="0.4569" data-gy="0.6872" style="left:44.336%;top:67.513%;width:2.930%;height:2.669%"><div class="pr"><div class="pm"><img src="a/b123.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.4919" data-dy="0.8706" data-r="0.4297" data-a="150.5" data-gx="0.7133" data-gy="0.6892" style="left:70.410%;top:68.424%;width:1.758%;height:1.107%"><div class="pr"><div class="pm"><img src="a/b124.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.2852" data-dy="0.9585" data-r="0.3889" data-a="163.4" data-gx="0.6129" data-gy="0.6883" style="left:60.352%;top:68.099%;width:2.344%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b125.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3504" data-dy="0.9366" data-r="0.4166" data-a="159.5" data-gx="0.6480" data-gy="0.6999" style="left:61.523%;top:68.294%;width:6.348%;height:3.971%"><div class="pr"><div class="pm"><img src="a/b126.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.4916" data-dy="0.8708" data-r="0.4544" data-a="150.6" data-gx="0.7253" data-gy="0.7036" style="left:71.582%;top:69.531%;width:2.051%;height:1.758%"><div class="pr"><div class="pm"><img src="a/b127.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6490" data-dy="0.7608" data-r="0.5635" data-a="139.5" data-gx="0.8676" data-gy="0.7256" style="left:83.887%;top:69.792%;width:5.762%;height:4.492%"><div class="pr"><div class="pm"><img src="a/b128.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6514" data-dy="0.7587" data-r="0.5440" data-a="139.3" data-gx="0.8563" data-gy="0.7149" style="left:84.668%;top:70.508%;width:1.855%;height:1.953%"><div class="pr"><div class="pm"><img src="a/b129.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3174" data-dy="0.9483" data-r="0.4713" data-a="161.5" data-gx="0.6515" data-gy="0.7378" style="left:64.160%;top:73.177%;width:2.051%;height:1.237%"><div class="pr"><div class="pm"><img src="a/b130.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.3339" data-dy="0.9426" data-r="0.4756" data-a="199.5" data-gx="0.3432" data-gy="0.7386" style="left:33.398%;top:73.047%;width:1.953%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b131.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.3282" data-dy="0.9446" data-r="0.4868" data-a="160.8" data-gx="0.6617" data-gy="0.7463" style="left:64.941%;top:73.698%;width:2.539%;height:2.279%"><div class="pr"><div class="pm"><img src="a/b132.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6375" data-dy="0.7704" data-r="0.6168" data-a="219.6" data-gx="0.1087" data-gy="0.7566" style="left:8.301%;top:74.805%;width:5.957%;height:2.539%"><div class="pr"><div class="pm"><img src="a/b133.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.0441" data-dy="0.9990" data-r="0.7982" data-a="177.5" data-gx="0.5372" data-gy="0.9714" style="left:49.805%;top:93.294%;width:7.324%;height:6.706%"><div class="pr"><div class="pm"><img src="a/b134.webp" alt="" decoding="async"></div></div></div></div></div></div>
+<div class="L rot" id="Lring"><div class="zm"><div class="spin"><div class="pc bg" data-k="shard" data-dx="-0.0120" data-dy="-0.9999" data-r="0.1906" data-a="359.3" data-gx="0.4997" data-gy="0.3127" style="left:43.750%;top:25.586%;width:12.500%;height:10.156%"><div class="pr"><div class="pm"><img src="a/b029.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.1914" data-dy="-0.9815" data-r="0.2293" data-a="349.0" data-gx="0.4581" data-gy="0.2897" style="left:43.555%;top:27.018%;width:4.297%;height:4.753%"><div class="pr"><div class="pm"><img src="a/b034.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.1930" data-dy="-0.9812" data-r="0.2235" data-a="11.1" data-gx="0.5451" data-gy="0.2936" style="left:52.637%;top:27.344%;width:3.906%;height:4.232%"><div class="pr"><div class="pm"><img src="a/b036.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6224" data-dy="-0.7827" data-r="0.1791" data-a="38.5" data-gx="0.6134" data-gy="0.3463" style="left:56.250%;top:30.599%;width:9.961%;height:7.617%"><div class="pr"><div class="pm"><img src="a/b038.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6389" data-dy="-0.7693" data-r="0.1819" data-a="320.3" data-gx="0.3857" data-gy="0.3465" style="left:33.691%;top:30.469%;width:10.059%;height:8.073%"><div class="pr"><div class="pm"><img src="a/b039.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7728" data-dy="-0.6347" data-r="0.2582" data-a="50.6" data-gx="0.7015" data-gy="0.3305" style="left:69.043%;top:32.422%;width:2.148%;height:1.367%"><div class="pr"><div class="pm"><img src="a/b041.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.7826" data-dy="-0.6226" data-r="0.2324" data-a="308.5" data-gx="0.3201" data-gy="0.3433" style="left:31.152%;top:33.789%;width:1.855%;height:1.302%"><div class="pr"><div class="pm"><img src="a/b045.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7768" data-dy="-0.6297" data-r="0.2297" data-a="51.0" data-gx="0.6804" data-gy="0.3433" style="left:66.797%;top:33.594%;width:2.441%;height:1.562%"><div class="pr"><div class="pm"><img src="a/b046.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.8947" data-dy="-0.4467" data-r="0.2201" data-a="296.5" data-gx="0.3050" data-gy="0.3742" style="left:26.758%;top:35.677%;width:6.934%;height:3.320%"><div class="pr"><div class="pm"><img src="a/b049.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.8513" data-dy="-0.5247" data-r="0.2051" data-a="301.7" data-gx="0.3274" data-gy="0.3680" style="left:31.543%;top:36.133%;width:2.539%;height:1.562%"><div class="pr"><div class="pm"><img src="a/b050.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.8524" data-dy="-0.5228" data-r="0.1980" data-a="58.5" data-gx="0.6707" data-gy="0.3708" style="left:65.723%;top:36.003%;width:2.734%;height:2.148%"><div class="pr"><div class="pm"><img src="a/b051.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.9503" data-dy="-0.3115" data-r="0.2370" data-a="71.9" data-gx="0.7272" data-gy="0.3906" style="left:67.676%;top:36.589%;width:8.594%;height:5.143%"><div class="pr"><div class="pm"><img src="a/b053.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.9571" data-dy="-0.2899" data-r="0.2586" data-a="286.9" data-gx="0.2544" data-gy="0.3898" style="left:21.973%;top:36.979%;width:6.738%;height:4.167%"><div class="pr"><div class="pm"><img src="a/b054.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.9999" data-dy="-0.0116" data-r="0.1735" data-a="270.7" data-gx="0.3285" data-gy="0.4384" style="left:24.316%;top:37.826%;width:16.602%;height:12.109%"><div class="pr"><div class="pm"><img src="a/b057.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9999" data-dy="-0.0110" data-r="0.1685" data-a="89.4" data-gx="0.6705" data-gy="0.4385" style="left:59.082%;top:37.891%;width:16.602%;height:11.914%"><div class="pr"><div class="pm"><img src="a/b058.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.9643" data-dy="0.2647" data-r="0.2458" data-a="254.7" data-gx="0.2649" data-gy="0.4832" style="left:22.754%;top:46.224%;width:7.617%;height:3.841%"><div class="pr"><div class="pm"><img src="a/b075.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.9617" data-dy="0.2739" data-r="0.2341" data-a="105.9" data-gx="0.7271" data-gy="0.4825" style="left:70.020%;top:46.354%;width:5.469%;height:3.255%"><div class="pr"><div class="pm"><img src="a/b076.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6488" data-dy="0.7610" data-r="0.1830" data-a="220.5" data-gx="0.3832" data-gy="0.5326" style="left:33.105%;top:49.284%;width:10.938%;height:7.943%"><div class="pr"><div class="pm"><img src="a/b083.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6352" data-dy="0.7723" data-r="0.1804" data-a="140.6" data-gx="0.6166" data-gy="0.5327" style="left:56.152%;top:49.349%;width:10.840%;height:8.008%"><div class="pr"><div class="pm"><img src="a/b084.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8891" data-dy="0.4578" data-r="0.2099" data-a="242.8" data-gx="0.3153" data-gy="0.5038" style="left:29.980%;top:49.349%;width:3.320%;height:2.018%"><div class="pr"><div class="pm"><img src="a/b085.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8123" data-dy="0.5832" data-r="0.2277" data-a="234.3" data-gx="0.3170" data-gy="0.5283" style="left:30.469%;top:51.953%;width:2.539%;height:1.758%"><div class="pr"><div class="pm"><img src="a/b090.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.8063" data-dy="0.5915" data-r="0.2251" data-a="126.3" data-gx="0.6835" data-gy="0.5285" style="left:67.090%;top:52.344%;width:2.637%;height:1.367%"><div class="pr"><div class="pm"><img src="a/b091.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0133" data-dy="0.9999" data-r="0.1881" data-a="180.8" data-gx="0.4994" data-gy="0.5652" style="left:43.457%;top:52.214%;width:13.184%;height:10.286%"><div class="pr"><div class="pm"><img src="a/b092.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8087" data-dy="0.5882" data-r="0.2481" data-a="234.0" data-gx="0.3013" data-gy="0.5371" style="left:28.906%;top:53.060%;width:2.441%;height:1.432%"><div class="pr"><div class="pm"><img src="a/b093.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.8049" data-dy="0.5934" data-r="0.2459" data-a="126.4" data-gx="0.6998" data-gy="0.5370" style="left:68.945%;top:52.865%;width:2.344%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b094.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.4899" data-dy="0.8718" data-r="0.2542" data-a="209.3" data-gx="0.3774" data-gy="0.5875" style="left:34.277%;top:56.120%;width:9.375%;height:6.185%"><div class="pr"><div class="pm"><img src="a/b098.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.1981" data-dy="0.9802" data-r="0.2246" data-a="168.6" data-gx="0.5464" data-gy="0.5866" style="left:52.930%;top:56.315%;width:3.516%;height:4.297%"><div class="pr"><div class="pm"><img src="a/b099.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.2150" data-dy="0.9766" data-r="0.2255" data-a="192.4" data-gx="0.4535" data-gy="0.5866" style="left:43.652%;top:56.315%;width:3.516%;height:4.492%"><div class="pr"><div class="pm"><img src="a/b101.webp" alt="" decoding="async"></div></div></div></div></div></div>
+<div class="L rot" id="Lcore"><div class="zm"><div class="spin"><div class="pc bg" data-k="gold" data-dx="-0.4084" data-dy="-0.9128" data-r="0.1209" data-a="335.9" data-gx="0.4526" data-gy="0.3662" style="left:43.164%;top:32.878%;width:4.492%;height:7.617%"><div class="pr"><div class="pm"><img src="a/b042.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.3741" data-dy="-0.9274" data-r="0.1194" data-a="22.0" data-gx="0.5466" data-gy="0.3660" style="left:52.441%;top:32.878%;width:4.199%;height:7.617%"><div class="pr"><div class="pm"><img src="a/b043.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0054" data-dy="-1.0000" data-r="0.1180" data-a="359.7" data-gx="0.5013" data-gy="0.3611" style="left:48.535%;top:35.417%;width:2.930%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b048.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0462" data-dy="-0.9989" data-r="0.0602" data-a="357.3" data-gx="0.4992" data-gy="0.3997" style="left:47.070%;top:36.719%;width:5.762%;height:7.292%"><div class="pr"><div class="pm"><img src="a/b052.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="-0.6314" data-dy="-0.7754" data-r="0.1120" data-a="320.8" data-gx="0.4312" data-gy="0.3819" style="left:42.188%;top:37.500%;width:2.441%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b055.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="0.6029" data-dy="-0.7979" data-r="0.1086" data-a="37.1" data-gx="0.5674" data-gy="0.3820" style="left:55.762%;top:37.500%;width:2.539%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b056.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.8952" data-dy="-0.4457" data-r="0.1110" data-a="296.5" data-gx="0.4025" data-gy="0.4068" style="left:36.133%;top:38.411%;width:7.812%;height:4.492%"><div class="pr"><div class="pm"><img src="a/b059.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.8866" data-dy="-0.4625" data-r="0.1063" data-a="62.5" data-gx="0.5962" data-gy="0.4070" style="left:55.957%;top:38.411%;width:8.105%;height:4.557%"><div class="pr"><div class="pm"><img src="a/b060.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8081" data-dy="-0.5890" data-r="0.0557" data-a="306.1" data-gx="0.4569" data-gy="0.4179" style="left:42.090%;top:39.583%;width:8.008%;height:4.688%"><div class="pr"><div class="pm"><img src="a/b061.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7735" data-dy="-0.6338" data-r="0.0514" data-a="50.7" data-gx="0.5417" data-gy="0.4181" style="left:49.902%;top:39.648%;width:8.008%;height:4.688%"><div class="pr"><div class="pm"><img src="a/b062.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.9999" data-dy="0.0155" data-r="0.0624" data-a="269.1" data-gx="0.4396" data-gy="0.4404" style="left:39.746%;top:42.839%;width:9.766%;height:2.539%"><div class="pr"><div class="pm"><img src="a/b064.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.9991" data-dy="0.0423" data-r="0.0568" data-a="92.4" data-gx="0.5588" data-gy="0.4414" style="left:50.684%;top:42.839%;width:9.180%;height:2.604%"><div class="pr"><div class="pm"><img src="a/b065.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="-0.9999" data-dy="0.0158" data-r="0.1169" data-a="269.1" data-gx="0.3851" data-gy="0.4410" style="left:37.109%;top:43.164%;width:2.832%;height:1.953%"><div class="pr"><div class="pm"><img src="a/b066.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="dot" data-dx="0.9998" data-dy="0.0184" data-r="0.1113" data-a="91.1" data-gx="0.6132" data-gy="0.4411" style="left:60.254%;top:43.294%;width:2.246%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b067.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.8423" data-dy="0.5389" data-r="0.0812" data-a="237.4" data-gx="0.4335" data-gy="0.4690" style="left:35.840%;top:44.010%;width:14.160%;height:5.534%"><div class="pr"><div class="pm"><img src="a/b070.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.7319" data-dy="0.6814" data-r="0.0560" data-a="133.0" data-gx="0.5429" data-gy="0.4652" style="left:50.098%;top:44.010%;width:7.715%;height:4.948%"><div class="pr"><div class="pm"><img src="a/b071.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0420" data-dy="0.9991" data-r="0.0636" data-a="182.4" data-gx="0.4993" data-gy="0.4822" style="left:47.168%;top:44.531%;width:5.762%;height:6.576%"><div class="pr"><div class="pm"><img src="a/b072.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.8775" data-dy="0.4796" data-r="0.1080" data-a="118.7" data-gx="0.5967" data-gy="0.4743" style="left:56.055%;top:45.378%;width:8.105%;height:4.297%"><div class="pr"><div class="pm"><img src="a/b073.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="-0.4083" data-dy="0.9128" data-r="0.1217" data-a="204.1" data-gx="0.4522" data-gy="0.5139" style="left:42.969%;top:47.786%;width:4.688%;height:7.227%"><div class="pr"><div class="pm"><img src="a/b078.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="gold" data-dx="0.3750" data-dy="0.9270" data-r="0.1203" data-a="158.0" data-gx="0.5470" data-gy="0.5141" style="left:52.441%;top:47.852%;width:4.492%;height:7.161%"><div class="pr"><div class="pm"><img src="a/b079.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.6275" data-dy="0.7786" data-r="0.1137" data-a="218.9" data-gx="0.4306" data-gy="0.4988" style="left:42.090%;top:48.958%;width:2.051%;height:1.562%"><div class="pr"><div class="pm"><img src="a/b080.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="0.6016" data-dy="0.7988" data-r="0.1106" data-a="143.0" data-gx="0.5685" data-gy="0.4987" style="left:55.762%;top:48.958%;width:2.344%;height:1.693%"><div class="pr"><div class="pm"><img src="a/b081.webp" alt="" decoding="async"></div></div></div>
+<div class="pc bg" data-k="shard" data-dx="-0.0187" data-dy="0.9998" data-r="0.1154" data-a="181.1" data-gx="0.4998" data-gy="0.5167" style="left:48.633%;top:50.911%;width:2.832%;height:1.628%"><div class="pr"><div class="pm"><img src="a/b088.webp" alt="" decoding="async"></div></div></div></div></div></div>
+<div class="L" id="Lov"><div class="zm"><div class="pc ov" data-k="shard" data-dx="-0.6353" data-dy="-0.7723" data-r="0.6987" data-a="320.6" data-gx="0.0581" data-gy="0.0801" data-n="Freeform 3" style="left:0.000%;top:4.948%;width:9.668%;height:7.552%"><div class="pr"><div class="pm"><img src="a/o00.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.2039" data-dy="-0.9790" data-r="0.6123" data-a="348.2" data-gx="0.3771" data-gy="0.0402" data-n="Freeform 4" style="left:32.617%;top:0.000%;width:7.812%;height:11.263%"><div class="pr"><div class="pm"><img src="a/o01.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.0905" data-dy="-0.9959" data-r="0.5619" data-a="354.8" data-gx="0.4511" data-gy="0.0667" data-n="Freeform 5" style="left:42.285%;top:3.711%;width:5.859%;height:5.078%"><div class="pr"><div class="pm"><img src="a/o02.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.1637" data-dy="-0.9865" data-r="0.5997" data-a="9.4" data-gx="0.6001" data-gy="0.0454" data-n="Freeform 6" style="left:53.809%;top:0.000%;width:11.621%;height:11.263%"><div class="pr"><div class="pm"><img src="a/o03.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="0.3240" data-dy="-0.9461" data-r="0.6328" data-a="18.9" data-gx="0.7070" data-gy="0.0406" data-n="Freeform 7" style="left:65.332%;top:0.000%;width:9.668%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o04.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.6103" data-dy="-0.7922" data-r="0.4859" data-a="322.4" data-gx="0.2054" data-gy="0.1832" data-n="Freeform 8" style="left:3.809%;top:12.500%;width:25.098%;height:13.802%"><div class="pr"><div class="pm"><img src="a/o05.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.7557" data-dy="-0.6549" data-r="0.5877" data-a="310.9" data-gx="0.0578" data-gy="0.1832" data-n="Freeform 9" style="left:1.855%;top:13.737%;width:9.766%;height:7.552%"><div class="pr"><div class="pm"><img src="a/o06.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.7637" data-dy="-0.6455" data-r="0.4861" data-a="310.2" data-gx="0.1307" data-gy="0.2306" data-n="Freeform 10" style="left:7.617%;top:19.987%;width:9.766%;height:6.315%"><div class="pr"><div class="pm"><img src="a/o07.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="fig" data-dx="-0.4718" data-dy="-0.8817" data-r="0.4822" data-a="331.8" data-gx="0.2744" data-gy="0.1563" data-n="Freeform 11" style="left:7.617%;top:1.237%;width:40.527%;height:30.013%"><div class="pr"><div class="pm"><img src="a/o08.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="-0.3469" data-dy="-0.9379" data-r="0.6017" data-a="339.7" data-gx="0.2932" data-gy="0.0636" data-n="Freeform 12" style="left:26.855%;top:4.948%;width:4.004%;height:2.604%"><div class="pr"><div class="pm"><img src="a/o09.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="fig" data-dx="-0.9565" data-dy="-0.2917" data-r="0.4058" data-a="287.0" data-gx="0.1138" data-gy="0.3608" data-n="Freeform 13" style="left:0.000%;top:26.237%;width:26.953%;height:17.513%"><div class="pr"><div class="pm"><img src="a/o10.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="-0.9992" data-dy="0.0405" data-r="0.4475" data-a="267.7" data-gx="0.0548" data-gy="0.4519" data-n="Freeform 14" style="left:1.855%;top:43.750%;width:7.812%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o11.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.9959" data-dy="0.0903" data-r="0.3749" data-a="264.8" data-gx="0.1286" data-gy="0.4623" data-n="Freeform 15" style="left:5.762%;top:43.750%;width:13.477%;height:5.013%"><div class="pr"><div class="pm"><img src="a/o12.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.9299" data-dy="0.3678" data-r="0.4175" data-a="248.4" data-gx="0.1137" data-gy="0.5422" data-n="Freeform 16" style="left:0.000%;top:48.698%;width:30.859%;height:13.802%"><div class="pr"><div class="pm"><img src="a/o13.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.8366" data-dy="0.5479" data-r="0.5462" data-a="236.8" data-gx="0.0450" data-gy="0.6393" data-n="Freeform 17" style="left:0.000%;top:59.961%;width:9.668%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o14.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.8400" data-dy="0.5426" data-r="0.4317" data-a="237.1" data-gx="0.1393" data-gy="0.5959" data-n="Freeform 18" style="left:7.617%;top:56.250%;width:9.766%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o15.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="fig" data-dx="-0.6345" data-dy="0.7730" data-r="0.4235" data-a="219.4" data-gx="0.2332" data-gy="0.6580" data-n="Freeform 19" style="left:0.000%;top:48.698%;width:32.715%;height:26.302%"><div class="pr"><div class="pm"><img src="a/o16.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.4344" data-dy="0.9007" data-r="0.4860" data-a="205.7" data-gx="0.2908" data-gy="0.7316" data-n="Freeform 20" style="left:25.000%;top:68.750%;width:7.715%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o17.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.2741" data-dy="0.9617" data-r="0.4709" data-a="195.9" data-gx="0.3729" data-gy="0.7417" data-n="Freeform 21" style="left:34.570%;top:72.461%;width:5.859%;height:5.078%"><div class="pr"><div class="pm"><img src="a/o18.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.5381" data-dy="0.8429" data-r="0.7160" data-a="212.6" data-gx="0.1167" data-gy="0.8421" data-n="Freeform 22" style="left:5.762%;top:77.474%;width:11.621%;height:11.328%"><div class="pr"><div class="pm"><img src="a/o19.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="-0.4867" data-dy="0.8736" data-r="0.7787" data-a="209.1" data-gx="0.1229" data-gy="0.8933" data-n="Freeform 23" style="left:5.762%;top:83.724%;width:11.621%;height:10.026%"><div class="pr"><div class="pm"><img src="a/o20.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.3994" data-dy="0.9168" data-r="0.7633" data-a="203.5" data-gx="0.1970" data-gy="0.9063" data-n="Freeform 24" style="left:15.332%;top:86.198%;width:7.812%;height:8.854%"><div class="pr"><div class="pm"><img src="a/o21.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="haze" data-dx="-0.3054" data-dy="0.9522" data-r="0.8004" data-a="197.8" data-gx="0.2575" data-gy="0.9479" data-n="Freeform 25" style="left:19.141%;top:91.211%;width:15.527%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o22.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="-0.2421" data-dy="0.9702" data-r="0.8244" data-a="194.0" data-gx="0.3023" data-gy="0.9730" data-n="Freeform 26" style="left:26.855%;top:93.750%;width:5.859%;height:6.250%"><div class="pr"><div class="pm"><img src="a/o23.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0059" data-dy="-1.0000" data-r="0.4981" data-a="359.7" data-gx="0.4990" data-gy="0.1077" data-n="Freeform 27" style="left:48.047%;top:3.711%;width:1.953%;height:15.039%"><div class="pr"><div class="pm"><img src="a/o24.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0049" data-dy="-1.0000" data-r="0.3704" data-a="359.7" data-gx="0.5001" data-gy="0.1929" data-n="Freeform 28" style="left:48.047%;top:18.750%;width:3.906%;height:1.302%"><div class="pr"><div class="pm"><img src="a/o25.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0069" data-dy="-1.0000" data-r="0.3086" data-a="359.6" data-gx="0.4998" data-gy="0.2340" data-n="Freeform 29" style="left:48.047%;top:21.224%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o26.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0075" data-dy="-1.0000" data-r="0.2822" data-a="359.6" data-gx="0.4998" data-gy="0.2516" data-n="Freeform 30" style="left:48.047%;top:23.698%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o27.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0076" data-dy="-1.0000" data-r="0.2326" data-a="359.6" data-gx="0.5002" data-gy="0.2847" data-n="Freeform 31" style="left:48.047%;top:26.237%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o28.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0082" data-dy="-1.0000" data-r="0.1823" data-a="359.5" data-gx="0.5005" data-gy="0.3183" data-n="Freeform 32" style="left:48.047%;top:29.948%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o29.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0158" data-dy="-0.9999" data-r="0.1497" data-a="359.1" data-gx="0.4996" data-gy="0.3400" data-n="Freeform 33" style="left:48.047%;top:32.487%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o30.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0226" data-dy="-0.9997" data-r="0.1182" data-a="358.7" data-gx="0.4993" data-gy="0.3610" data-n="Freeform 34" style="left:48.047%;top:34.961%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o31.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0192" data-dy="-0.9998" data-r="0.0767" data-a="358.9" data-gx="0.5005" data-gy="0.3886" data-n="Freeform 35" style="left:48.047%;top:37.500%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o32.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0616" data-dy="-0.9981" data-r="0.0341" data-a="356.5" data-gx="0.4999" data-gy="0.4171" data-n="Freeform 36" style="left:48.047%;top:39.974%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o33.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0319" data-dy="0.9995" data-r="0.0034" data-a="181.8" data-gx="0.5018" data-gy="0.4421" data-n="Freeform 37" style="left:48.047%;top:42.448%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o34.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.1058" data-dy="0.9944" data-r="0.0443" data-a="186.1" data-gx="0.4973" data-gy="0.4691" data-n="Freeform 38" style="left:48.047%;top:44.987%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o35.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0327" data-dy="0.9995" data-r="0.0775" data-a="181.9" data-gx="0.4994" data-gy="0.4914" data-n="Freeform 39" style="left:48.047%;top:47.461%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o36.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0229" data-dy="0.9997" data-r="0.1158" data-a="181.3" data-gx="0.4993" data-gy="0.5169" data-n="Freeform 40" style="left:48.047%;top:50.000%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o37.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0172" data-dy="0.9999" data-r="0.1590" data-a="181.0" data-gx="0.4992" data-gy="0.5457" data-n="Freeform 41" style="left:48.047%;top:52.474%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o38.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0168" data-dy="0.9999" data-r="0.1923" data-a="181.0" data-gx="0.4987" data-gy="0.5680" data-n="Freeform 42" style="left:48.047%;top:54.948%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o39.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0120" data-dy="0.9999" data-r="0.2264" data-a="180.7" data-gx="0.4992" data-gy="0.5907" data-n="Freeform 43" style="left:48.047%;top:57.487%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o40.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0093" data-dy="1.0000" data-r="0.2758" data-a="180.5" data-gx="0.4994" data-gy="0.6237" data-n="Freeform 44" style="left:48.047%;top:59.961%;width:3.906%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o41.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0066" data-dy="1.0000" data-r="0.3078" data-a="180.4" data-gx="0.4999" data-gy="0.6450" data-n="Freeform 45" style="left:48.047%;top:62.500%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o42.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0049" data-dy="1.0000" data-r="0.3542" data-a="180.3" data-gx="0.5002" data-gy="0.6759" data-n="Freeform 46" style="left:48.047%;top:64.974%;width:3.906%;height:3.776%"><div class="pr"><div class="pm"><img src="a/o43.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0046" data-dy="1.0000" data-r="0.3889" data-a="180.3" data-gx="0.5002" data-gy="0.6990" data-n="Freeform 47" style="left:48.047%;top:67.448%;width:3.906%;height:6.315%"><div class="pr"><div class="pm"><img src="a/o44.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="axis" data-dx="-0.0004" data-dy="1.0000" data-r="0.7475" data-a="180.0" data-gx="0.5017" data-gy="0.9381" data-n="Freeform 48" style="left:50.000%;top:91.211%;width:1.953%;height:5.078%"><div class="pr"><div class="pm"><img src="a/o45.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.0450" data-dy="0.9990" data-r="0.7984" data-a="177.4" data-gx="0.5379" data-gy="0.9715" data-n="Freeform 49" style="left:50.000%;top:92.448%;width:7.715%;height:7.552%"><div class="pr"><div class="pm"><img src="a/o46.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.3281" data-dy="0.9447" data-r="0.4830" data-a="160.8" data-gx="0.6604" data-gy="0.7439" data-n="Freeform 50" style="left:63.379%;top:72.461%;width:5.859%;height:3.841%"><div class="pr"><div class="pm"><img src="a/o47.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="haze" data-dx="0.2013" data-dy="0.9795" data-r="0.3196" data-a="168.4" data-gx="0.5663" data-gy="0.6485" data-n="Freeform 51" style="left:53.809%;top:62.500%;width:5.859%;height:5.013%"><div class="pr"><div class="pm"><img src="a/o48.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.1174" data-dy="0.9931" data-r="0.3813" data-a="173.3" data-gx="0.5467" data-gy="0.6922" data-n="Freeform 52" style="left:51.855%;top:66.211%;width:5.859%;height:6.315%"><div class="pr"><div class="pm"><img src="a/o49.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.7929" data-dy="0.6093" data-r="0.4797" data-a="127.5" data-gx="0.8823" data-gy="0.6346" data-n="Freeform 53" style="left:82.617%;top:58.724%;width:11.621%;height:10.026%"><div class="pr"><div class="pm"><img src="a/o50.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="0.7636" data-dy="0.6457" data-r="0.5691" data-a="130.2" data-gx="0.9365" data-gy="0.6847" data-n="Freeform 54" style="left:90.332%;top:64.974%;width:5.859%;height:6.315%"><div class="pr"><div class="pm"><img src="a/o51.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="0.5495" data-dy="0.8355" data-r="0.6972" data-a="146.7" data-gx="0.8851" data-gy="0.8281" data-n="Freeform 55" style="left:82.617%;top:77.474%;width:11.621%;height:10.026%"><div class="pr"><div class="pm"><img src="a/o52.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.5238" data-dy="0.8518" data-r="0.7482" data-a="148.4" data-gx="0.8939" data-gy="0.8647" data-n="Freeform 56" style="left:84.570%;top:81.250%;width:9.668%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o53.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="0.4616" data-dy="0.8871" data-r="0.8135" data-a="152.5" data-gx="0.8774" data-gy="0.9209" data-n="Freeform 57" style="left:82.617%;top:84.961%;width:11.621%;height:13.802%"><div class="pr"><div class="pm"><img src="a/o54.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="haze" data-dx="0.3961" data-dy="0.9182" data-r="0.7925" data-a="156.7" data-gx="0.8159" data-gy="0.9249" data-n="Freeform 58" style="left:76.855%;top:89.974%;width:7.812%;height:5.078%"><div class="pr"><div class="pm"><img src="a/o55.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.3002" data-dy="0.9539" data-r="0.8181" data-a="162.5" data-gx="0.7475" data-gy="0.9600" data-n="Freeform 59" style="left:69.141%;top:91.211%;width:11.719%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o56.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="gold" data-dx="0.8165" data-dy="0.5773" data-r="0.3856" data-a="125.3" data-gx="0.8168" data-gy="0.5882" data-n="Freeform 60" style="left:71.094%;top:53.711%;width:28.906%;height:10.091%"><div class="pr"><div class="pm"><img src="a/o57.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="fig" data-dx="0.9859" data-dy="-0.1674" data-r="0.3782" data-a="80.4" data-gx="0.8748" data-gy="0.3976" data-n="Freeform 61" style="left:65.332%;top:28.711%;width:34.668%;height:21.289%"><div class="pr"><div class="pm"><img src="a/o58.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.8233" data-dy="-0.5676" data-r="0.4936" data-a="55.4" data-gx="0.9083" data-gy="0.2530" data-n="Freeform 62" style="left:65.332%;top:13.737%;width:34.668%;height:20.052%"><div class="pr"><div class="pm"><img src="a/o59.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="fig" data-dx="1.0000" data-dy="0.0060" data-r="0.3679" data-a="90.3" data-gx="0.8698" data-gy="0.4412" data-n="Freeform 63" style="left:65.332%;top:32.487%;width:34.668%;height:22.526%"><div class="pr"><div class="pm"><img src="a/o60.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.7850" data-dy="0.6195" data-r="0.4377" data-a="128.3" data-gx="0.8456" data-gy="0.6206" data-n="Freeform 64" style="left:65.332%;top:50.000%;width:34.668%;height:23.763%"><div class="pr"><div class="pm"><img src="a/o61.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.5828" data-dy="0.8126" data-r="0.5788" data-a="144.4" data-gx="0.8393" data-gy="0.7534" data-n="Freeform 65" style="left:65.332%;top:72.461%;width:34.668%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o62.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="shard" data-dx="0.4805" data-dy="0.8770" data-r="0.7115" data-a="151.3" data-gx="0.8438" data-gy="0.8558" data-n="Freeform 66" style="left:65.332%;top:79.948%;width:34.668%;height:8.854%"><div class="pr"><div class="pm"><img src="a/o63.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="haze" data-dx="0.4747" data-dy="0.8801" data-r="0.8479" data-a="151.7" data-gx="0.9045" data-gy="0.9373" data-n="Freeform 67" style="left:65.332%;top:87.500%;width:34.668%;height:8.789%"><div class="pr"><div class="pm"><img src="a/o64.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="haze" data-dx="0.4122" data-dy="0.9111" data-r="0.8925" data-a="155.7" data-gx="0.8698" data-gy="0.9819" data-n="Freeform 68" style="left:65.332%;top:94.987%;width:34.668%;height:5.013%"><div class="pr"><div class="pm"><img src="a/o65.webp" alt="" decoding="async"></div></div></div>
+<div class="pc ov" data-k="rule" data-dx="-0.0034" data-dy="1.0000" data-r="0.6562" data-a="180.2" data-gx="0.4998" data-gy="0.8773" data-n="Freeform 72" style="left:48.047%;top:87.500%;width:3.906%;height:1.302%"><div class="pr"><div class="pm"><img src="a/o66.webp" alt="" decoding="async"></div></div></div></div></div>
+<div class="L" id="Lwing"><div class="zm"></div></div>
+<div class="L" id="Ltxt"><div class="zm"><p class="tx fosa" aria-label="Fosa" style="left:41.995%;top:74.971%;width:14.313%;font-size:3.9622cqw;letter-spacing:0.793cqw;line-height:5.5469cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">F</span><span class="ch">O</span><span class="ch">S</span><span class="ch">A</span></span></p>
+<h1 class="tx title" aria-label="Kaleidoscope" style="left:17.281%;top:78.516%;width:63.741%;font-size:6.3594cqw;letter-spacing:1.2721cqw;line-height:8.9036cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">K</span><span class="ch">A</span><span class="ch">L</span><span class="ch">E</span><span class="ch">I</span><span class="ch">D</span><span class="ch">O</span><span class="ch">S</span><span class="ch">C</span><span class="ch">O</span><span class="ch">P</span><span class="ch">E</span></span></h1>
+<p class="tx tag" aria-label="Culture In Motion" style="left:29.570%;top:84.387%;width:39.162%;font-size:1.9388cqw;letter-spacing:0.9688cqw;line-height:2.7148cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">C</span><span class="ch">U</span><span class="ch">L</span><span class="ch">T</span><span class="ch">U</span><span class="ch">R</span><span class="ch">E</span><span class="ch">&nbsp;</span><span class="ch">I</span><span class="ch">N</span><span class="ch">&nbsp;</span><span class="ch">M</span><span class="ch">O</span><span class="ch">T</span><span class="ch">I</span><span class="ch">O</span><span class="ch">N</span></span></p>
+<p class="tx word" aria-label="Performance" style="left:28.165%;top:89.386%;width:11.764%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">P</span><span class="ch">E</span><span class="ch">R</span><span class="ch">F</span><span class="ch">O</span><span class="ch">R</span><span class="ch">M</span><span class="ch">A</span><span class="ch">N</span><span class="ch">C</span><span class="ch">E</span></span></p>
+<p class="tx word" aria-label="Community" style="left:60.787%;top:89.386%;width:9.802%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">C</span><span class="ch">O</span><span class="ch">M</span><span class="ch">M</span><span class="ch">U</span><span class="ch">N</span><span class="ch">I</span><span class="ch">T</span><span class="ch">Y</span></span></p>
+<p class="tx word" aria-label="Exchange" style="left:45.573%;top:89.386%;width:8.618%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:400;color:#061F42"><span aria-hidden="true"><span class="ch">E</span><span class="ch">X</span><span class="ch">C</span><span class="ch">H</span><span class="ch">A</span><span class="ch">N</span><span class="ch">G</span><span class="ch">E</span></span></p>
+<p class="tx x" aria-label="and" style="left:42.414%;top:89.386%;width:1.085%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:700;color:#D19C51"><span aria-hidden="true"><span class="ch">X</span></span></p>
+<p class="tx x" aria-label="and" style="left:57.209%;top:89.386%;width:1.085%;font-size:1.1706cqw;letter-spacing:0.2344cqw;line-height:1.6393cqw;font-weight:700;color:#D19C51"><span aria-hidden="true"><span class="ch">X</span></span></p></div></div>
+  </div>
+  <div class="ctl" aria-label="Poster animation">
+    <button class="chip" id="bReplay" type="button">Replay</button>
+    <button class="chip" id="bShatter" type="button">Shatter</button>
+    <button class="chip" id="bPause" type="button" aria-pressed="false">Pause</button>
+  </div>
+  <a class="cue" href="#about"><i></i>Scroll for details</a>
+</section>
+
+<section class="s about" id="about" aria-labelledby="h-about">
+  <div class="wrap">
+    <div>
+      <h2 id="h-about" data-rv>Many pieces, one pattern</h2>
+      <p class="lead" data-rv>Like a kaleidoscope that turns many colourful pieces into one beautiful pattern, the FOSA 2027 Culture Show brings traditions from around the world onto one stage.</p>
+      <details data-rv>
+        <summary><span class="pl" aria-hidden="true"></span>Read more</summary>
+        <div class="more">
+          <p>Every culture is unique. Together, they create something inspiring and beautiful.</p>
+          <p>“Tradition in Motion” reminds us that culture is not something frozen in the past. It is alive and evolving, and it keeps connecting people across generations and borders through music, dance, food, language and shared experiences.</p>
+        </div>
+      </details>
+    </div>
+    <div>
+      <div class="rosette" id="rosette" role="button" tabindex="0" aria-label="Turn the kaleidoscope"><div class="rcopy" style="width:166.67%;height:250.00%;left:-33.66%;top:-59.94%"><div class="rspin" id="rRing"><img class="rp" src="a/b029.webp" alt="" data-dx="-0.012" data-dy="-1.000" data-r="0.191" style="left:43.750%;top:25.586%;width:12.500%;height:10.156%">
+<img class="rp" src="a/b034.webp" alt="" data-dx="-0.191" data-dy="-0.982" data-r="0.229" style="left:43.555%;top:27.018%;width:4.297%;height:4.753%">
+<img class="rp" src="a/b036.webp" alt="" data-dx="0.193" data-dy="-0.981" data-r="0.223" style="left:52.637%;top:27.344%;width:3.906%;height:4.232%">
+<img class="rp" src="a/b038.webp" alt="" data-dx="0.622" data-dy="-0.783" data-r="0.179" style="left:56.250%;top:30.599%;width:9.961%;height:7.617%">
+<img class="rp" src="a/b039.webp" alt="" data-dx="-0.639" data-dy="-0.769" data-r="0.182" style="left:33.691%;top:30.469%;width:10.059%;height:8.073%">
+<img class="rp" src="a/b041.webp" alt="" data-dx="0.773" data-dy="-0.635" data-r="0.258" style="left:69.043%;top:32.422%;width:2.148%;height:1.367%">
+<img class="rp" src="a/b045.webp" alt="" data-dx="-0.783" data-dy="-0.623" data-r="0.232" style="left:31.152%;top:33.789%;width:1.855%;height:1.302%">
+<img class="rp" src="a/b046.webp" alt="" data-dx="0.777" data-dy="-0.630" data-r="0.230" style="left:66.797%;top:33.594%;width:2.441%;height:1.562%">
+<img class="rp" src="a/b049.webp" alt="" data-dx="-0.895" data-dy="-0.447" data-r="0.220" style="left:26.758%;top:35.677%;width:6.934%;height:3.320%">
+<img class="rp" src="a/b050.webp" alt="" data-dx="-0.851" data-dy="-0.525" data-r="0.205" style="left:31.543%;top:36.133%;width:2.539%;height:1.562%">
+<img class="rp" src="a/b051.webp" alt="" data-dx="0.852" data-dy="-0.523" data-r="0.198" style="left:65.723%;top:36.003%;width:2.734%;height:2.148%">
+<img class="rp" src="a/b053.webp" alt="" data-dx="0.950" data-dy="-0.311" data-r="0.237" style="left:67.676%;top:36.589%;width:8.594%;height:5.143%">
+<img class="rp" src="a/b054.webp" alt="" data-dx="-0.957" data-dy="-0.290" data-r="0.259" style="left:21.973%;top:36.979%;width:6.738%;height:4.167%">
+<img class="rp" src="a/b057.webp" alt="" data-dx="-1.000" data-dy="-0.012" data-r="0.174" style="left:24.316%;top:37.826%;width:16.602%;height:12.109%">
+<img class="rp" src="a/b058.webp" alt="" data-dx="1.000" data-dy="-0.011" data-r="0.169" style="left:59.082%;top:37.891%;width:16.602%;height:11.914%">
+<img class="rp" src="a/b075.webp" alt="" data-dx="-0.964" data-dy="0.265" data-r="0.246" style="left:22.754%;top:46.224%;width:7.617%;height:3.841%">
+<img class="rp" src="a/b076.webp" alt="" data-dx="0.962" data-dy="0.274" data-r="0.234" style="left:70.020%;top:46.354%;width:5.469%;height:3.255%">
+<img class="rp" src="a/b083.webp" alt="" data-dx="-0.649" data-dy="0.761" data-r="0.183" style="left:33.105%;top:49.284%;width:10.938%;height:7.943%">
+<img class="rp" src="a/b084.webp" alt="" data-dx="0.635" data-dy="0.772" data-r="0.180" style="left:56.152%;top:49.349%;width:10.840%;height:8.008%">
+<img class="rp" src="a/b085.webp" alt="" data-dx="-0.889" data-dy="0.458" data-r="0.210" style="left:29.980%;top:49.349%;width:3.320%;height:2.018%">
+<img class="rp" src="a/b090.webp" alt="" data-dx="-0.812" data-dy="0.583" data-r="0.228" style="left:30.469%;top:51.953%;width:2.539%;height:1.758%">
+<img class="rp" src="a/b091.webp" alt="" data-dx="0.806" data-dy="0.591" data-r="0.225" style="left:67.090%;top:52.344%;width:2.637%;height:1.367%">
+<img class="rp" src="a/b092.webp" alt="" data-dx="-0.013" data-dy="1.000" data-r="0.188" style="left:43.457%;top:52.214%;width:13.184%;height:10.286%">
+<img class="rp" src="a/b093.webp" alt="" data-dx="-0.809" data-dy="0.588" data-r="0.248" style="left:28.906%;top:53.060%;width:2.441%;height:1.432%">
+<img class="rp" src="a/b094.webp" alt="" data-dx="0.805" data-dy="0.593" data-r="0.246" style="left:68.945%;top:52.865%;width:2.344%;height:1.628%">
+<img class="rp" src="a/b098.webp" alt="" data-dx="-0.490" data-dy="0.872" data-r="0.254" style="left:34.277%;top:56.120%;width:9.375%;height:6.185%">
+<img class="rp" src="a/b099.webp" alt="" data-dx="0.198" data-dy="0.980" data-r="0.225" style="left:52.930%;top:56.315%;width:3.516%;height:4.297%">
+<img class="rp" src="a/b101.webp" alt="" data-dx="-0.215" data-dy="0.977" data-r="0.226" style="left:43.652%;top:56.315%;width:3.516%;height:4.492%"></div><div class="rspin" id="rCore"><img class="rp" src="a/b042.webp" alt="" data-dx="-0.408" data-dy="-0.913" data-r="0.121" style="left:43.164%;top:32.878%;width:4.492%;height:7.617%">
+<img class="rp" src="a/b043.webp" alt="" data-dx="0.374" data-dy="-0.927" data-r="0.119" style="left:52.441%;top:32.878%;width:4.199%;height:7.617%">
+<img class="rp" src="a/b048.webp" alt="" data-dx="-0.005" data-dy="-1.000" data-r="0.118" style="left:48.535%;top:35.417%;width:2.930%;height:1.628%">
+<img class="rp" src="a/b052.webp" alt="" data-dx="-0.046" data-dy="-0.999" data-r="0.060" style="left:47.070%;top:36.719%;width:5.762%;height:7.292%">
+<img class="rp" src="a/b055.webp" alt="" data-dx="-0.631" data-dy="-0.775" data-r="0.112" style="left:42.188%;top:37.500%;width:2.441%;height:1.693%">
+<img class="rp" src="a/b056.webp" alt="" data-dx="0.603" data-dy="-0.798" data-r="0.109" style="left:55.762%;top:37.500%;width:2.539%;height:1.693%">
+<img class="rp" src="a/b059.webp" alt="" data-dx="-0.895" data-dy="-0.446" data-r="0.111" style="left:36.133%;top:38.411%;width:7.812%;height:4.492%">
+<img class="rp" src="a/b060.webp" alt="" data-dx="0.887" data-dy="-0.463" data-r="0.106" style="left:55.957%;top:38.411%;width:8.105%;height:4.557%">
+<img class="rp" src="a/b061.webp" alt="" data-dx="-0.808" data-dy="-0.589" data-r="0.056" style="left:42.090%;top:39.583%;width:8.008%;height:4.688%">
+<img class="rp" src="a/b062.webp" alt="" data-dx="0.773" data-dy="-0.634" data-r="0.051" style="left:49.902%;top:39.648%;width:8.008%;height:4.688%">
+<img class="rp" src="a/b064.webp" alt="" data-dx="-1.000" data-dy="0.015" data-r="0.062" style="left:39.746%;top:42.839%;width:9.766%;height:2.539%">
+<img class="rp" src="a/b065.webp" alt="" data-dx="0.999" data-dy="0.042" data-r="0.057" style="left:50.684%;top:42.839%;width:9.180%;height:2.604%">
+<img class="rp" src="a/b066.webp" alt="" data-dx="-1.000" data-dy="0.016" data-r="0.117" style="left:37.109%;top:43.164%;width:2.832%;height:1.953%">
+<img class="rp" src="a/b067.webp" alt="" data-dx="1.000" data-dy="0.018" data-r="0.111" style="left:60.254%;top:43.294%;width:2.246%;height:1.693%">
+<img class="rp" src="a/b070.webp" alt="" data-dx="-0.842" data-dy="0.539" data-r="0.081" style="left:35.840%;top:44.010%;width:14.160%;height:5.534%">
+<img class="rp" src="a/b071.webp" alt="" data-dx="0.732" data-dy="0.681" data-r="0.056" style="left:50.098%;top:44.010%;width:7.715%;height:4.948%">
+<img class="rp" src="a/b072.webp" alt="" data-dx="-0.042" data-dy="0.999" data-r="0.064" style="left:47.168%;top:44.531%;width:5.762%;height:6.576%">
+<img class="rp" src="a/b073.webp" alt="" data-dx="0.877" data-dy="0.480" data-r="0.108" style="left:56.055%;top:45.378%;width:8.105%;height:4.297%">
+<img class="rp" src="a/b078.webp" alt="" data-dx="-0.408" data-dy="0.913" data-r="0.122" style="left:42.969%;top:47.786%;width:4.688%;height:7.227%">
+<img class="rp" src="a/b079.webp" alt="" data-dx="0.375" data-dy="0.927" data-r="0.120" style="left:52.441%;top:47.852%;width:4.492%;height:7.161%">
+<img class="rp" src="a/b080.webp" alt="" data-dx="-0.628" data-dy="0.779" data-r="0.114" style="left:42.090%;top:48.958%;width:2.051%;height:1.562%">
+<img class="rp" src="a/b081.webp" alt="" data-dx="0.602" data-dy="0.799" data-r="0.111" style="left:55.762%;top:48.958%;width:2.344%;height:1.693%">
+<img class="rp" src="a/b088.webp" alt="" data-dx="-0.019" data-dy="1.000" data-r="0.115" style="left:48.633%;top:50.911%;width:2.832%;height:1.628%"></div></div></div>
+      <p class="rnote">Scroll or tap to turn it</p>
+    </div>
+  </div>
+</section>
+
+<section class="s visit" id="visit" aria-labelledby="h-visit">
+  <img class="deco hm" data-speed="-.25" data-spin="40" src="a/o51.webp" alt="" style="width:clamp(70px,9vw,150px);right:6%;top:9%">
+  <img class="deco" data-speed=".35" data-spin="-60" src="a/o03.webp" alt="" style="width:clamp(60px,7vw,120px);right:34%;bottom:2%">
+  <img class="deco" data-speed=".2" data-spin="30" src="a/o00.webp" alt="" style="width:clamp(80px,10vw,170px);right:3%;bottom:10%">
+  <img class="deco hm" data-speed="-.4" data-spin="-90" src="a/o09.webp" alt="" style="width:clamp(34px,4vw,60px);left:46%;bottom:6%">
+  <div class="wrap">
+    <h2 class="date" id="h-visit" aria-label="17 January 2027"><span aria-hidden="true">17 JAN 2027</span></h2>
+    <div class="row">
+      <p class="when" data-rv><span>Sunday, 1:00 to 3:00 PM</span><span>Acros Fukuoka Event Hall, B2F</span><span>Free entry, open to everyone</span></p>
+      <div class="act" data-rv>
+        <a class="btn" href="https://docs.google.com/forms/d/1T8xE7zlN29RPpQWMausfICLrCpUhzcIcdfh2Johy-vs/viewform" target="_blank" rel="noopener">Reserve a free seat</a>
+        <details>
+          <summary><span class="pl" aria-hidden="true"></span>Event details</summary>
+          <div class="more">
+            <ul class="facts">
+              <li><b>Reception</b><span>Opens at 12:30 PM</span></li>
+              <li><b>Address</b><span>Acros Fukuoka B2F Event Hall, 1-1-1 Tenjin, Chuo-ku, Fukuoka 810-0001</span></li>
+              <li><b>On stage</b><span>Performances by artists, and a fashion show of traditional attire from many countries</span></li>
+              <li><b>Tickets</b><span>Each reservation covers one person. Friends coming together each reserve their own seat.</span></li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s moments" id="moments" aria-labelledby="h-moments">
+  <div class="wrap">
+    <h2 id="h-moments" data-rv>Moments from past shows</h2>
+    <p class="lead" data-rv style="margin-top:20px">Dance, music and traditional attire, shared by students and friends from many countries.</p>
+    <div class="mosaic">
+      <figure class="shot s1"><img src="p/kimono.webp" alt="A dancer in an orange kimono performing with a fan" loading="lazy"></figure>
+      <figure class="shot s2"><img src="p/costumes.webp" alt="Four performers in traditional dress on stage under flags of many countries" loading="lazy"></figure>
+      <figure class="shot s3"><img src="p/stage.webp" alt="Two pairs of dancers performing a traditional dance on a red-lit stage" loading="lazy"></figure>
+      <figure class="shot s4"><img src="p/veil.webp" alt="A dancer with flowing pink silk veils" loading="lazy"></figure>
+      <figure class="shot s5"><img src="p/fanveil.webp" alt="A dancer with fan veils in pink and gold" loading="lazy"></figure>
+      <figure class="shot s6"><img src="p/team.webp" alt="FOSA members and performers together after the show" loading="lazy" style="object-position:50% 30%"></figure>
+    </div>
+  </div>
+</section>
+
+<section class="s perform" id="perform" aria-labelledby="h-perform">
+  <img class="deco hm" data-speed=".3" data-spin="50" src="a/o51.webp" alt="" style="width:clamp(50px,6vw,100px);left:3%;top:6%">
+  <img class="deco hm" data-speed="-.3" data-spin="-40" src="a/o55.webp" alt="" style="width:clamp(60px,7vw,120px);left:40%;bottom:4%">
+  <div class="wrap">
+    <div>
+      <h2 id="h-perform" data-rv>Take the stage</h2>
+      <p class="lead" data-rv>Dance, acoustic singing, poetry, traditional costume or another cultural performance. Japanese and international performers are welcome, and international students get priority.</p>
+      <p class="deadline" data-rv><span>Apply by</span>22 December 2026, 23:59</p>
+      <div data-rv><a class="btn gold" href="https://docs.google.com/forms/d/1P8v3C2DItpqaBAdwlAEhp1DGRsNni7nGr9lcNxcrH_w/viewform" target="_blank" rel="noopener">Apply to perform</a></div>
+      <details data-rv>
+        <summary><span class="pl" aria-hidden="true"></span>Performer details</summary>
+        <div class="more">
+          <h3>Show day</h3>
+          <ol class="sched">
+            <li><time>9:00–9:30</time><span>Gathering</span></li>
+            <li><time>10:00–11:00</time><span>Rehearsal</span></li>
+            <li><time>11:00–12:00</time><span>Lunch</span></li>
+            <li><time>13:00–15:00</time><span>Performances</span></li>
+            <li><time>15:00–16:00</time><span>Closing</span></li>
+          </ol>
+          <h3 style="margin-top:14px">Honorarium per group</h3>
+          <p>The same whatever the performance type or number of performances.</p>
+          <table class="fee"><tbody>
+            <tr><td>1 performer</td><td>¥3,000</td></tr>
+            <tr><td>2 performers</td><td>¥5,000</td></tr>
+            <tr><td>3 performers</td><td>¥6,000</td></tr>
+            <tr><td>4 performers</td><td>¥8,000</td></tr>
+            <tr><td>5 to 10 performers</td><td>¥10,000</td></tr>
+            <tr><td>10 to 15 performers</td><td>¥15,000</td></tr>
+            <tr><td>More than 15</td><td>¥20,000</td></tr>
+          </tbody></table>
+          <h3 style="margin-top:14px">Before you apply</h3>
+          <ul class="notes">
+            <li>One person in charge registers for the whole team.</li>
+            <li>Each group performs for up to 15 minutes.</li>
+            <li>A practice video is required. If it is not ready yet, you can email it later.</li>
+            <li>If many groups apply, not every group can be selected. The person in charge receives the result by email.</li>
+            <li>Traditional costume performances close the programme.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+    <div class="figs" aria-hidden="true">
+      <img data-fig src="a/o08.webp" alt="" style="width:64%;left:0;top:0">
+      <img data-fig src="a/o10.webp" alt="" style="width:62%;right:0;top:30%">
+      <img data-fig src="a/o60.webp" alt="" style="width:54%;left:8%;bottom:0">
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <p class="big" aria-label="FOSA"><span aria-hidden="true">FOSA</span></p>
+    <div class="row">
+      <div>
+        <h2 style="font-size:clamp(22px,2.4vw,32px);margin-bottom:18px">Fukuoka Overseas Students Association</h2>
+        <div class="contact">
+          <span>Email: <a href="mailto:info.fosa16@gmail.com">info.fosa16@gmail.com</a></span>
+          <span>Instagram: <a href="https://www.instagram.com/fosafukuoka/" target="_blank" rel="noopener">@fosafukuoka</a></span>
+          <span>Facebook: Fukuoka Overseas Students Association - FOSA</span>
+        </div>
+      </div>
+      <div class="ctas">
+        <a class="btn" href="https://docs.google.com/forms/d/1T8xE7zlN29RPpQWMausfICLrCpUhzcIcdfh2Johy-vs/viewform" target="_blank" rel="noopener">Reserve a free seat</a>
+        <a class="btn gold" href="https://docs.google.com/forms/d/1P8v3C2DItpqaBAdwlAEhp1DGRsNni7nGr9lcNxcrH_w/viewform" target="_blank" rel="noopener">Apply to perform</a>
+      </div>
+    </div>
+    <div class="logos">
+      <img data-rv src="a/logo-fosa.png" alt="FOSA logo">
+      <img data-rv src="a/logo-fosa2026.svg" alt="FOSA 2026 logo">
+      <img data-rv class="wide" src="a/logo-fissc.png" alt="FiSSC logo">
+    </div>
+    <p class="small">FOSA Kaleidoscope, the 2027 Culture Show. 17 January 2027, Acros Fukuoka.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+{
+const P = document.getElementById('poster');
+const show = () => { P.style.visibility = 'visible'; };
+if (!window.gsap) { show(); } else {
+gsap.registerPlugin(ScrollTrigger);
+
+const $ = (s, r = P) => [...r.querySelectorAll(s)];
+const R = gsap.utils.random;
+const W = () => P.clientWidth;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const seekT = new URLSearchParams(location.search).get('t');
+const items = $('.pc').map(el => ({
+  el, pr: el.firstElementChild, pm: el.firstElementChild.firstElementChild,
+  k: el.dataset.k, dx: +el.dataset.dx, dy: +el.dataset.dy, r: +el.dataset.r, a: +el.dataset.a,
+  gx: +el.dataset.gx, gy: +el.dataset.gy, g: el.closest('.L').id
+}));
+
+/* ---------- wings: on wide screens the burst continues past the poster to the screen edges ---------- */
+const hero = document.querySelector('.hero');
+const LW = document.querySelector('#Lwing .zm');
+const CXF = 0.50195, CYF = 0.43978;
+const angOf = (u, v) => { const vx = u - CXF, vy = (v - CYF) * 1.5, r = Math.hypot(vx, vy) || 1e-6;
+  return { dx: vx / r, dy: vy / r, r, a: (Math.atan2(vx, -vy) * 180 / Math.PI + 360) % 360 }; };
+const pool = items.filter(d => (d.k === 'shard' || d.k === 'gold') && d.g === 'Louter')
+  .map(d => ({ src: d.pm.querySelector('img').getAttribute('src'), w: parseFloat(d.el.style.width), h: parseFloat(d.el.style.height), a: d.a, k: d.k }))
+  .filter(s => s.w < 20 && s.w > 1.2);
+let rays = [];
+function makeWings() {
+  LW.innerHTML = ''; rays = [];
+  const w = W(), h = w * 1.5, hb = hero.getBoundingClientRect(), pb = P.getBoundingClientRect();
+  const L0 = pb.left - hb.left, R0 = hb.right - pb.right, T0 = pb.top - hb.top, B0 = hb.bottom - pb.bottom;
+  if (innerWidth < 761 || Math.max(L0, R0) < 48) { hero.classList.remove('wide'); return []; }
+  const out = [], cell = w * .095, taken = [];
+  const add = (el, u, v, k) => { LW.appendChild(el); const g = angOf(u, v);
+    out.push({ el, pr: el.firstElementChild, pf: el.querySelector('.pf'), pm: el.querySelector('.pm'), k, ...g, gx: u, gy: v, g: 'Lwing' }); };
+  for (const side of [-1, 1]) {
+    const span = side < 0 ? L0 : R0; if (span < 48) continue;
+    const x0 = side < 0 ? -span : w - w * .05, x1 = side < 0 ? w * .05 : w + span;
+    for (let y = -T0 - cell * .5; y < h + B0 + cell * .5; y += cell) for (let x = x0; x < x1; x += cell) {
+      const px = x + R(-.45, .45) * cell, py = y + R(-.45, .45) * cell;
+      const e = side < 0 ? Math.min(1, Math.max(0, -px / span)) : Math.min(1, Math.max(0, (px - w) / span));
+      if (Math.random() > .97 - .5 * e) continue;
+      if (taken.some(t => Math.hypot(t[0] - px, t[1] - py) < cell * .62)) continue;
+      taken.push([px, py]);
+      const s0 = pool[Math.floor(Math.random() * pool.length)], sc = R(.75, 1.4) * (1 - .45 * e);
+      const u = px / w, v = py / h, g = angOf(u, v), wpc = s0.w * sc, hpc = s0.h * sc;
+      const el = document.createElement('div'); el.className = 'pc wg';
+      el.style.cssText = `left:${(u * 100 - wpc / 2).toFixed(3)}%;top:${(v * 100 - hpc / 2).toFixed(3)}%;width:${wpc.toFixed(3)}%;height:${hpc.toFixed(3)}%`;
+      const flip = Math.random() < .5 ? ' scaleX(-1)' : '';
+      el.innerHTML = `<div class="pr"><div class="pf"><div class="pm"><img src="${s0.src}" alt="" style="transform:rotate(${(g.a - s0.a + R(-12, 12)).toFixed(1)}deg)${flip}"></div></div></div>`;
+      add(el, u, v, s0.k);
+    }
+    // dotted trails and rays, the poster's own punctuation
+    for (let i = 0; i < 4; i++) {
+      const ty = R(-T0, h + B0), tx = side < 0 ? -L0 : w + R0, cx = CXF * w, cy = CYF * h;
+      const ex = side < 0 ? 0 : w, t = (ex - cx) / (tx - cx), sx = ex, sy = cy + t * (ty - cy);
+      const len = Math.hypot(tx - sx, ty - sy), ang = Math.atan2(ty - sy, tx - sx) * 180 / Math.PI;
+      const ray = document.createElement('div'); ray.className = 'ray';
+      ray.style.cssText = `left:${sx / w * 100}%;top:${sy / h * 100}%;width:${len / w * 100}%;height:max(1px,.16%);background:${i % 2 ? 'var(--ink)' : 'var(--gold)'};opacity:${i % 2 ? .45 : .7};transform:rotate(${ang}deg)`;
+      ray.innerHTML = '<i class="spark"></i>';
+      LW.appendChild(ray); rays.push(ray);
+      if (i < 2) for (let j = 0; j < 5; j++) {
+        const f = R(.12, .85), ux = (sx + (tx - sx) * f) / w, vy = (sy + (ty - sy) * f) / h + R(-.012, .012), d = R(.6, 1.3);
+        const el = document.createElement('div'); el.className = 'pc wg';
+        el.style.cssText = `left:${ux * 100}%;top:${vy * 100}%;width:${d}%;height:${d / 1.5}%`;
+        el.innerHTML = '<div class="pr"><div class="pf"><div class="pm"><div class="dotc"></div></div></div></div>';
+        add(el, ux, vy, 'dot');
+      }
+    }
+  }
+  hero.classList.toggle('wide', out.length > 0);
+  return out;
+}
+items.forEach(d => { if (d.g !== 'Louter' && d.g !== 'Lov') return;
+  const l = parseFloat(d.el.style.left), w = parseFloat(d.el.style.width);
+  if (w > 8 && l < .5) d.el.classList.add('eL'); if (w > 8 && l + w > 99.5) d.el.classList.add('eR'); });
+let wing = makeWings();
+items.push(...wing);
+const by = f => items.filter(f);
+const core = by(d => d.g === 'Lcore'), ring = by(d => d.g === 'Lring'), outer = by(d => d.g === 'Louter');
+const ov = by(d => d.g === 'Lov');
+const axis = ov.filter(d => d.k === 'axis').sort((a, b) => a.gy - b.gy);
+const rule = ov.filter(d => d.k === 'rule');
+const figs = ov.filter(d => d.k === 'fig');
+const haze = ov.filter(d => d.k === 'haze');
+const flyers = [...outer, ...ov.filter(d => d.k === 'shard' || d.k === 'gold'), ...wing.filter(d => d.k !== 'dot')];
+const dots = by(d => d.k === 'dot');
+const golds = by(d => d.k === 'gold');
+const T = s => $('.tx.' + s + ' .ch');
+const title = T('title'), fosa = T('fosa'), tag = T('tag'), xs = $('.tx.x'), words = $('.tx.word');
+const allChars = $('.ch');
+
+/* ---------- poster entrance: one master timeline ---------- */
+function intro() {
+  const w = W();
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
+  if (reduce) { tl.from(P, { autoAlpha: 0, duration: .6, ease: 'power1.out' }); return tl; }
+  tl.fromTo('#Lcore', { rotation: -150 }, { rotation: 0, duration: 2.8 }, 0);
+  tl.from([...core].sort((a, b) => a.r - b.r).map(d => d.el), { scale: 0, autoAlpha: 0, duration: 1.3, ease: 'back.out(1.7)', stagger: .02 }, .05);
+  tl.fromTo('#Lring', { rotation: 110 }, { rotation: 0, duration: 2.6 }, .3);
+  [...ring].sort((a, b) => a.a - b.a).forEach((d, i) => {
+    tl.from(d.el, { x: -d.dx * d.r * w, y: -d.dy * d.r * w, scale: .15, rotation: R(-120, 120), autoAlpha: 0, duration: 1.7 }, .35 + i * .012);
+  });
+  flyers.forEach(d => {
+    const dist = (.35 + Math.random() * .45) * w;
+    tl.from(d.el, { x: d.dx * dist, y: d.dy * dist, rotation: R(-160, 160), scale: R(.3, .8), autoAlpha: 0, duration: R(1.3, 1.8) }, .75 + d.a / 360 * 1.3);
+  });
+  if (rays.length) tl.from(rays, { scaleX: 0, duration: 1.4, ease: 'power3.out', stagger: .05 }, 1.1);
+  tl.from(dots.map(d => d.el), { scale: 0, duration: .7, ease: 'back.out(3)', stagger: { each: .03, from: 'random' } }, 1.0);
+  tl.fromTo('#Ldust', { autoAlpha: 0, scale: .9 }, { autoAlpha: 1, scale: 1, duration: 2.4, ease: 'power2.out' }, .9);
+  tl.from(haze.map(d => d.el), { autoAlpha: 0, duration: 2, ease: 'power1.out' }, 1.4);
+  figs.forEach((d, i) => {
+    tl.from(d.el, { scale: 1.35, rotation: R(-24, 24), x: d.dx * w * .12, y: d.dy * w * .12, autoAlpha: 0, duration: 1.9, ease: 'power4.out' }, 1.25 + i * .14);
+  });
+  tl.from(axis.map(d => d.el), { scaleY: 0, transformOrigin: '50% 0%', autoAlpha: 0, duration: .5, ease: 'power2.out', stagger: .045 }, 1.5);
+  const t0 = 2.3;
+  tl.from(fosa, { yPercent: 110, autoAlpha: 0, duration: 1, ease: 'power4.out', stagger: .08 }, t0);
+  tl.from(title, { yPercent: 70, rotationX: -100, transformPerspective: 600, transformOrigin: '50% 100%', autoAlpha: 0, duration: 1.2, ease: 'power4.out', stagger: { each: .055, from: 'center' } }, t0 + .2);
+  tl.from(tag, { autoAlpha: 0, y: w * .012, duration: .8, ease: 'power2.out', stagger: { each: .03, from: 'edges' } }, t0 + .7);
+  tl.from(rule.map(d => d.el), { scaleX: 0, duration: .9, ease: 'power3.inOut' }, t0 + 1);
+  tl.from(words, { autoAlpha: 0, y: w * .015, duration: .8, ease: 'power3.out', stagger: .12 }, t0 + 1.2);
+  tl.from(xs, { scale: 0, rotation: -270, autoAlpha: 0, duration: 1, ease: 'back.out(2)', stagger: .15 }, t0 + 1.35);
+  return tl;
+}
+
+/* ---------- poster idle life ---------- */
+const loops = [];
+const L = t => (loops.push(t), t);
+let wingLoops = [];
+const LW2 = t => (L(t), wingLoops.push(t), t);
+let idleOn = false, paused = false, heroOn = true;
+function idle() {
+  if (idleOn || reduce) return; idleOn = true;
+  const w = W();
+  L(gsap.to('#Lcore .spin', { rotation: 360, duration: 90, ease: 'none', repeat: -1 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 5.5, delay: 3 }).to('#Lring .spin', { rotation: '-=45', duration: 1.9, ease: 'power3.inOut' }));
+  L(gsap.to('#Ldust', { autoAlpha: .82, duration: 4, ease: 'sine.inOut', yoyo: true, repeat: -1 }));
+  items.forEach(life);
+  rays.forEach(rayLife);
+  L(gsap.timeline({ repeat: -1, delay: 3 }).call(wave).to({}, { duration: 7.4 }));
+  L(gsap.timeline({ repeat: -1 }).call(() => {
+    const d = golds[Math.floor(Math.random() * golds.length)];
+    gsap.fromTo(d.pm, { filter: 'brightness(1)' }, { filter: 'brightness(1.45)', duration: .35, yoyo: true, repeat: 1, ease: 'sine.inOut' });
+  }).to({}, { duration: .45 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 2.2, delay: 1 }).to(axis.map(d => d.pm), { autoAlpha: .25, duration: .25, yoyo: true, repeat: 1, ease: 'sine.inOut', stagger: .06 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 4.5, delay: 2 }).to(title, { yPercent: -14, duration: .45, ease: 'sine.inOut', yoyo: true, repeat: 1, stagger: .05 }));
+  L(gsap.timeline({ repeat: -1, repeatDelay: 2.6, delay: 1.5 }).to(xs, { rotation: '+=180', duration: .9, ease: 'power3.inOut', stagger: .2 }));
+  L(gsap.to(fosa, { yPercent: -10, duration: 1.6, ease: 'sine.inOut', yoyo: true, repeat: -1, stagger: { each: .2, yoyo: true, repeat: -1 } }));
+  setLoops();
+}
+function flow(d) {
+  // the piece travels outward from the poster edge to the screen edge, fades, and is emitted again
+  const w = W(), D = w * R(.24, .46) * (d.k === 'dot' ? .7 : 1), dur = R(7, 13);
+  const sx = -d.dx * D * .15, sy = -d.dy * D * .15, ex = d.dx * D * .85, ey = d.dy * D * .85, spin = R(-80, 80);
+  const t = gsap.timeline({ repeat: -1 });
+  t.fromTo(d.pf, { x: sx, y: sy, scale: .82, rotation: 0 }, { x: ex, y: ey, scale: 1.18, rotation: spin, duration: dur, ease: 'none' }, 0)
+   .fromTo(d.pf, { autoAlpha: 0 }, { autoAlpha: 1, duration: dur * .15, ease: 'power1.out' }, 0)
+   .to(d.pf, { autoAlpha: 0, duration: dur * .25, ease: 'power1.in' }, dur * .75);
+  t.progress(.15);                      // start exactly where the piece rests: no jump when the entrance ends
+  LW2(t);
+}
+function rayLife(ray) {
+  const sp = ray.firstElementChild;
+  LW2(gsap.timeline({ repeat: -1, repeatDelay: R(.8, 3), delay: R(0, 3) })
+    .fromTo(sp, { xPercent: -100, yPercent: -50 }, { xPercent: 1100, duration: R(1.8, 3), ease: 'power1.inOut' }, 0)
+    .fromTo(sp, { opacity: 0 }, { opacity: 1, duration: .4, yoyo: true, repeat: 1, repeatDelay: 1 }, 0));
+}
+function wave() {
+  // a pulse runs outward through the wings, in step with the mandala's turn
+  const pms = wing.filter(d => d.k !== 'dot').sort((a, b) => a.r - b.r).map(d => d.pm);
+  if (pms.length) gsap.to(pms, { scale: 1.28, duration: .32, ease: 'sine.out', yoyo: true, repeat: 1, stagger: .9 / pms.length });
+}
+function life(d) {
+  if (d.k === 'axis' || d.k === 'rule') return;
+  const A = d.g === 'Lwing' ? LW2 : L;
+  if (d.g === 'Lwing') flow(d);
+  if (d.k === 'dot') { A(gsap.to(d.pm, { scale: 1.45, duration: R(.9, 1.4), ease: 'sine.inOut', yoyo: true, repeat: -1, delay: R(0, 2) })); return; }
+  const amp = W() * (d.k === 'fig' ? .004 : .002 + Math.min(d.r, .9) * .008);
+  A(gsap.to(d.pm, { x: R(-1, 1) * amp, y: R(-1, 1) * amp, rotation: d.k === 'fig' ? R(-1.2, 1.2) : R(-4, 4), duration: R(2.6, 5.4), ease: 'sine.inOut', yoyo: true, repeat: -1, delay: R(0, 2) }));
+}
+function setLoops() { const run = !paused && heroOn; loops.forEach(t => run ? t.resume() : t.pause()); }
+
+/* ---------- pointer: layer depth + shards that make way ---------- */
+const depth = { Lwing: 1.1, Ldust: .35, Louter: .6, Lring: .45, Lcore: .3, Lov: 1, Ltxt: .18 };
+const par = Object.keys(depth).map(id => {
+  const el = document.getElementById(id);
+  return { d: depth[id], x: gsap.quickTo(el, 'x', { duration: .9, ease: 'power3' }), y: gsap.quickTo(el, 'y', { duration: .9, ease: 'power3' }) };
+});
+const mkPush = () => [...outer, ...ov.filter(d => d.k !== 'axis' && d.k !== 'rule' && d.k !== 'haze'), ...wing.filter(d => d.k !== 'dot')].map(d => ({
+  ...d, qx: gsap.quickTo(d.pr, 'x', { duration: .6, ease: 'power3' }), qy: gsap.quickTo(d.pr, 'y', { duration: .6, ease: 'power3' }),
+  qr: gsap.quickTo(d.pr, 'rotation', { duration: .8, ease: 'power3' }), on: false
+}));
+let pushers = mkPush();
+let pending = null, raf = 0;
+function frame() {
+  raf = 0; if (!pending) return;
+  const { px, py, nx, ny } = pending, w = W(), h = w * 1.5, rad = w * .16;
+  par.forEach(p => { p.x(nx * w * .02 * p.d); p.y(ny * w * .02 * p.d); });
+  pushers.forEach(d => {
+    const vx = d.gx * w - px, vy = d.gy * h - py, dist = Math.hypot(vx, vy);
+    if (dist < rad) {
+      const f = (1 - dist / rad) ** 2 * w * .045 / (dist || 1);
+      d.qx(vx * f); d.qy(vy * f); d.qr((vx > 0 ? 1 : -1) * (1 - dist / rad) * 14); d.on = true;
+    } else if (d.on) { d.qx(0); d.qy(0); d.qr(0); d.on = false; }
+  });
+}
+addEventListener('pointermove', e => {
+  if (reduce || paused || !heroOn) return;
+  const b = P.getBoundingClientRect();
+  pending = { px: e.clientX - b.left, py: e.clientY - b.top, nx: (e.clientX - innerWidth / 2) / innerWidth, ny: (e.clientY - innerHeight / 2) / innerHeight };
+  if (!raf) raf = requestAnimationFrame(frame);
+});
+hero.addEventListener('pointerleave', () => { pending = { px: -1e5, py: -1e5, nx: 0, ny: 0 }; if (!raf) raf = requestAnimationFrame(frame); });
+
+/* ---------- shatter ---------- */
+let burst = null;
+function shatter() {
+  if (reduce) return;
+  if (tl.isActive()) tl.progress(1);
+  if (burst) burst.progress(1).kill();
+  const w = W();
+  burst = gsap.timeline();
+  items.forEach(d => {
+    if (d.k === 'axis' || d.k === 'rule') return;
+    const dist = w * (.04 + d.r * .45 + Math.random() * .1);
+    burst.to(d.el, { x: d.dx * dist, y: d.dy * dist, rotation: R(-110, 110), scale: R(.7, 1.15), duration: .75, ease: 'power3.out' }, Math.random() * .08)
+         .to(d.el, { x: 0, y: 0, rotation: 0, scale: 1, duration: 1.6, ease: 'expo.inOut' }, .9 + d.r * .35);
+  });
+  burst.to(['#Lcore', '#Lring'], { rotation: i => i ? '-=90' : '+=180', duration: 2.6, ease: 'power3.inOut' }, 0);
+  burst.to(allChars, { y: () => R(-1, 1) * w * .03, rotation: () => R(-35, 35), duration: .6, ease: 'power3.out' }, 0)
+       .to(allChars, { y: 0, rotation: 0, duration: 1.2, ease: 'elastic.out(1,.45)', stagger: { each: .015, from: 'center' } }, 1.1);
+  burst.to(axis.map(d => d.el), { scaleY: 0, transformOrigin: '50% 50%', duration: .4, ease: 'power2.in', stagger: { each: .02, from: 'center' } }, 0)
+       .to(axis.map(d => d.el), { scaleY: 1, duration: .6, ease: 'power2.out', stagger: { each: .03, from: 'center' } }, 1.4);
+}
+
+/* ---------- rebuild the wings when the window changes shape ---------- */
+let rsT = 0, lastW = innerWidth, lastH = innerHeight;
+addEventListener('resize', () => { clearTimeout(rsT); rsT = setTimeout(() => {
+  if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 120) return;   // ignore mobile toolbar jitter
+  lastW = innerWidth; lastH = innerHeight;
+  if (tl.isActive()) tl.progress(1);
+  if (burst) burst.progress(1).kill();
+  wingLoops.forEach(t => { t.kill(); const i = loops.indexOf(t); if (i > -1) loops.splice(i, 1); }); wingLoops = [];
+  wing.forEach(d => { gsap.killTweensOf([d.el, d.pr, d.pf, d.pm]); const i = items.indexOf(d); if (i > -1) items.splice(i, 1); });
+  wing = makeWings(); items.push(...wing); pushers = mkPush();
+  if (idleOn && !reduce) { wing.forEach(life); rays.forEach(rayLife); setLoops(); }
+  ScrollTrigger.refresh();
+}, 250); });
+
+/* ---------- poster controls ---------- */
+let tl = intro();
+const bP = document.getElementById('bPause');
+document.getElementById('bReplay').addEventListener('click', () => {
+  if (burst) burst.progress(1).kill();
+  tl.progress(1).kill();
+  gsap.set(items.map(d => d.el), { clearProps: 'transform,opacity,visibility' });
+  gsap.set(allChars, { clearProps: 'transform,opacity,visibility' });
+  tl = intro(); tl.play();
+  if (paused) bP.click();
+});
+document.getElementById('bShatter').addEventListener('click', shatter);
+P.addEventListener('click', shatter);
+bP.addEventListener('click', () => {
+  paused = !paused; bP.setAttribute('aria-pressed', paused); bP.textContent = paused ? 'Play' : 'Pause';
+  paused ? tl.pause() : (tl.progress() < 1 && tl.resume()); setLoops();
+});
+if (reduce) document.getElementById('bShatter').remove();
+
+/* ---------- the rest of the page: scroll ---------- */
+const bar = document.getElementById('bar');
+ScrollTrigger.create({ trigger: '#about', start: 'top 75%', end: 'max', onToggle: s => bar.classList.toggle('on', s.isActive) });
+ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: 'bottom top', onToggle: s => { heroOn = s.isActive; setLoops(); } });
+
+const rosette = document.getElementById('rosette');
+const rps = [...rosette.querySelectorAll('.rp')];
+const date = document.querySelector('.date span');
+date.innerHTML = [...date.textContent].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+const bigF = document.querySelector('.big span');
+bigF.innerHTML = [...bigF.textContent].map(c => `<span class="ch">${c}</span>`).join('');
+
+const mm = gsap.matchMedia();
+mm.add('(prefers-reduced-motion: no-preference)', () => {
+  // fly through the kaleidoscope: as the poster scrolls away its layers zoom past at different depths
+  const z = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=85%', pin: true, scrub: .6 } });
+  z.to('#Lwing>.zm', { scale: 2.8, autoAlpha: 0, ease: 'power2.in' }, 0)
+   .to('#Lov>.zm', { scale: 2.6, autoAlpha: 0, ease: 'power2.in' }, 0)
+   .to('#Louter>.zm', { scale: 2.1, autoAlpha: 0, ease: 'power2.in' }, 0)
+   .to('#Ldust>.zm', { scale: 1.8, autoAlpha: 0, ease: 'power1.in' }, 0)
+   .to('#Lring>.zm', { scale: 1.5, rotation: 60, autoAlpha: 0, ease: 'power2.in' }, .1)
+   .to('#Lcore>.zm', { scale: 1.25, rotation: -90, autoAlpha: 0, ease: 'power1.in' }, .2)
+   .to('#Ltxt>.zm', { yPercent: -18, autoAlpha: 0, ease: 'power2.in' }, 0)
+   .to('.ctl,.cue', { autoAlpha: 0, duration: .2 }, 0);
+
+  // text reveals, section by section
+  ScrollTrigger.batch('[data-rv]', { start: 'top 88%', once: true,
+    onEnter: els => gsap.from(els, { y: 28, autoAlpha: 0, duration: .9, ease: 'power3.out', stagger: .08 }) });
+
+  // the rosette: its pieces gather as the section arrives, then scrolling turns it
+  gsap.from(rps, { x: i => rps[i].dataset.dx * 260 * (1 + Math.random()), y: i => rps[i].dataset.dy * 260 * (1 + Math.random()),
+    rotation: () => R(-180, 180), autoAlpha: 0, scale: .4, ease: 'power2.out', stagger: { each: .006, from: 'random' },
+    scrollTrigger: { trigger: '#about', start: 'top 85%', end: 'center 60%', scrub: .8 } });
+  gsap.to('#rCore', { rotation: 240, ease: 'none', scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+  gsap.to('#rRing', { rotation: -120, ease: 'none', scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: 1 } });
+
+  // the date rises letter by letter
+  gsap.from('.date .ch', { yPercent: 90, rotationX: -80, transformPerspective: 700, autoAlpha: 0, duration: 1.1, ease: 'power4.out',
+    stagger: .05, scrollTrigger: { trigger: '.date', start: 'top 85%', once: true } });
+
+  // loose shards drift against the scroll
+  document.querySelectorAll('.deco').forEach(el => {
+    gsap.fromTo(el, { y: () => -innerHeight * +el.dataset.speed * .5, rotation: 0 },
+      { y: () => innerHeight * +el.dataset.speed * .5, rotation: +el.dataset.spin, ease: 'none',
+        scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  // photographs open like facets of glass
+  const facets = ['polygon(0% 6%,100% 0%,94% 100%,4% 92%)', 'polygon(3% 0%,100% 8%,97% 100%,0% 94%)', 'polygon(0% 0%,96% 6%,100% 92%,5% 100%)',
+                  'polygon(6% 0%,100% 4%,92% 100%,0% 96%)', 'polygon(0% 5%,94% 0%,100% 100%,3% 94%)', 'polygon(4% 0%,100% 0%,96% 94%,0% 100%)'];
+  gsap.utils.toArray('.shot').forEach((el, i) => {
+    gsap.fromTo(el, { clipPath: 'polygon(50% 50%,50% 50%,50% 50%,50% 50%)', rotation: R(-8, 8), scale: .9 },
+      { clipPath: facets[i], rotation: 0, scale: 1, duration: 1.4, ease: 'expo.out', delay: (i % 3) * .12,
+        scrollTrigger: { trigger: el, start: 'top 90%', once: true } });
+    gsap.fromTo(el.querySelector('img'), { scale: 1.25 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  // dancers' panes turn into view and keep floating
+  gsap.utils.toArray('[data-fig]').forEach((el, i) => {
+    gsap.from(el, { autoAlpha: 0, scale: 1.3, rotation: R(-20, 20), y: 80, duration: 1.6, ease: 'power4.out', delay: i * .15,
+      scrollTrigger: { trigger: '.figs', start: 'top 80%', once: true } });
+    gsap.to(el, { yPercent: (i % 2 ? -1 : 1) * 10, ease: 'none', scrollTrigger: { trigger: '.figs', start: 'top bottom', end: 'bottom top', scrub: true } });
+  });
+
+  // the name closes the page
+  gsap.from('.big .ch', { yPercent: 100, autoAlpha: 0, duration: 1.2, ease: 'power4.out', stagger: .09,
+    scrollTrigger: { trigger: '.big', start: 'top 90%', once: true } });
+});
+
+// tap or Enter turns the rosette by one facet
+let turn = 0;
+const turnIt = () => { turn += 45;
+  gsap.to(rosette.querySelector('.rcopy'), { rotation: turn, transformOrigin: '50.195% 43.978%', duration: reduce ? 0 : 1.2, ease: 'power3.inOut' }); };
+rosette.addEventListener('click', turnIt);
+rosette.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); turnIt(); } });
+
+// folded details open with a short settle
+document.querySelectorAll('details').forEach(d => d.addEventListener('toggle', () => {
+  if (d.open && !reduce) gsap.from(d.querySelectorAll('.more > *'), { y: 14, autoAlpha: 0, duration: .5, ease: 'power3.out', stagger: .05 });
+}));
+
+/* ---------- start ---------- */
+if (seekT !== null) { show(); tl.seek(parseFloat(seekT)); window.__ready = true; }
+else {
+  tl.eventCallback('onComplete', idle);
+  const imgs = $('img');
+  const ready = Promise.all([document.fonts.ready, ...imgs.map(i => i.decode().catch(() => {}))]);
+  Promise.race([ready, new Promise(r => setTimeout(r, 4000))]).then(() => { show(); tl.play(); window.__ready = true; ScrollTrigger.refresh(); });
+}
+}
+}
+</script>
+</body>
+</html>
